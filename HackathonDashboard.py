@@ -731,7 +731,7 @@ with st.sidebar:
   st.markdown("Scan to open dashboard:")
 
   # Replace with your deployed GitHub / Streamlit Cloud URL
-  dashboard_url = "https://share.streamlit.io/"
+  dashboard_url = "https://ecosmart-campus-hackathon26.streamlit.app"
 
   dash_qr = qrcode.QRCode(version=1, box_size=5, border=2)
   dash_qr.add_data(dashboard_url)
