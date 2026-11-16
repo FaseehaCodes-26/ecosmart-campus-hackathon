@@ -133,7 +133,7 @@ with st.sidebar:
   st.markdown("---")
   st.markdown(
       "**Project Team:** EcoSmart Innovators <br>(Fathima Faseeha Faizoor &"
-      " Shivani)",
+      " Shivani Sruthi Soorjith)",
       unsafe_allow_html=True,
   )
   st.markdown(
@@ -151,7 +151,7 @@ if lang == "English":
       " Quality & Student Eco-Rewards for Hot-Climate Universities"
   )
 else:
-  st.title("🌿 كامпус إيكوسمارت : مركز الموارد والخبرات الذكية")
+  st.title("🌿 كام إيكوسمارت : مركز الموارد والخبرات الذكية")
   st.markdown(
       "### توحيد التبريد السلبي، الأتمتة اللاسلكية، جودة الهواء الداخلي ومكافآت"
       " الطلاب البيئية"
