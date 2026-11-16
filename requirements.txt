@@ -1,6 +1,7 @@
 streamlit
-pandas
 numpy
+pandas
 plotly
-qrcode
 pillow
+qrcode
+scikit-learn
