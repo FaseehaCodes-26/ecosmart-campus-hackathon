@@ -95,7 +95,7 @@ st.markdown(
     }
     .metric-card h2 {
         color: #143625 !important;
-        font-size: 28px;
+        font-size: 26px;
         font-weight: 800;
         margin-bottom: 6px;
     }
@@ -117,6 +117,29 @@ st.markdown(
     .info-box h4 {
         color: #143625 !important;
         margin-top: 0;
+    }
+
+    /* Decision Engine Live Banner */
+    .decision-banner {
+        background: linear-gradient(135deg, #143625 0%, #1E5631 100%) !important;
+        padding: 22px 26px;
+        border-radius: 12px;
+        margin: 15px 0 22px 0;
+        box-shadow: 0 6px 18px rgba(20, 54, 37, 0.16);
+        border-left: 8px solid #F59E0B !important;
+    }
+    .decision-banner h3, .decision-banner p, .decision-banner span, .decision-banner b {
+        color: #FFFFFF !important;
+        margin: 0;
+    }
+    .decision-banner h3 {
+        font-size: 22px !important;
+        margin-bottom: 8px !important;
+    }
+    .decision-banner p {
+        font-size: 15px !important;
+        line-height: 1.5;
+        opacity: 0.95;
     }
 
     /* Catchy Grid Alert Box */
@@ -149,7 +172,7 @@ st.markdown(
         color: #FFFFFF !important;
     }
 
-    /* CLEAN TABLES (NO HEAVY OUTER BOX BORDER) */
+    /* CLEAN TABLES */
     [data-testid="stTable"], [data-testid="stTable"] table, table {
         border: none !important;
         border-collapse: collapse !important;
@@ -179,47 +202,44 @@ st.markdown(
 
 # --- SIDEBAR: LANGUAGE SELECTOR & QR CODE ---
 with st.sidebar:
-  try:
-    st.image("liwa_logo.png", width=180)
-  except Exception:
-    st.markdown(
-        "<div style='background: white; padding: 10px; border-radius: 8px;"
-        " text-align: center; color: #143625 !important; font-weight:"
-        " bold;'>[Liwa University Logo]</div>",
-        unsafe_allow_html=True,
-    )
+    try:
+        st.image("liwa_logo.png", width=180)
+    except Exception:
+        st.markdown(
+            "<div style='background: white; padding: 10px; border-radius: 8px;"
+            " text-align: center; color: #143625 !important; font-weight:"
+            " bold;'>[Liwa University Logo]</div>",
+            unsafe_allow_html=True,
+        )
 
-  st.markdown("---")
-  lang = st.selectbox("🌐 Language / اللغة", ["English", "العربية (Arabic)"])
-  st.markdown("---")
+    st.markdown("---")
+    lang = st.selectbox("🌐 Language / اللغة", ["English", "العربية (Arabic)"])
+    st.markdown("---")
 
-  # DYNAMIC QR CODE SECTION IN SIDEBAR
-  if lang == "English":
-    st.markdown("### 📱 Live Web App")
-    st.markdown("Scan to open dashboard:")
-  else:
-    st.markdown("### 📱 التطبيق المباشر")
-    st.markdown("امسح الرمز لفتح المنصة:")
+    if lang == "English":
+        st.markdown("### 📱 Live Web App")
+        st.markdown("Scan to open dashboard:")
+    else:
+        st.markdown("### 📱 التطبيق المباشر")
+        st.markdown("امسح الرمز لفتح المنصة:")
 
-  dashboard_url = "https://ecosmart-campus-hackathon26.streamlit.app"
+    dashboard_url = "https://ecosmart-campus-hackathon26.streamlit.app"
+    dash_qr = qrcode.QRCode(version=1, box_size=5, border=2)
+    dash_qr.add_data(dashboard_url)
+    dash_qr.make(fit=True)
+    dash_img = dash_qr.make_image(fill_color="#F7F9F6", back_color="#143625")
 
-  dash_qr = qrcode.QRCode(version=1, box_size=5, border=2)
-  dash_qr.add_data(dashboard_url)
-  dash_qr.make(fit=True)
-  dash_img = dash_qr.make_image(fill_color="#F7F9F6", back_color="#143625")
+    buf_dash = io.BytesIO()
+    dash_img.save(buf_dash, format="PNG")
+    st.image(buf_dash.getvalue(), width=140)
 
-  buf_dash = io.BytesIO()
-  dash_img.save(buf_dash, format="PNG")
-
-  st.image(buf_dash.getvalue(), width=140)
-
-# --- FULL BILINGUAL DICTIONARY (ALL 7 TABS) ---
+# --- FULL BILINGUAL DICTIONARY ---
 TEXT = {
     "English": {
         "title": "🌿 EcoSmart Campus : Next-Gen Resource & Experience Hub",
         "subtitle": (
-            "Unifying Passive Cooling, AI Predictive HVAC, Wireless IoT"
-            " Automation & Student Eco-Rewards"
+            "Unifying Passive Cooling, Smart Timetable + Sensor HVAC Control,"
+            " Solar Canopies & Student Eco-Rewards"
         ),
         "header_team": (
             "<strong>Project Team:</strong> Fathima Faseeha Faizoor & Shivani"
@@ -229,7 +249,7 @@ TEXT = {
         "header_sdgs": "<strong>UN SDGs:</strong> 9, 11 & 12",
         "tabs": [
             "📊 Executive Command Center",
-            "🤖 AI Predictive HVAC & Anomaly Lab",
+            "🧠 Smart Timetable + Sensor + Solar Engine",
             "⚡ Energy3D Thermal & Solar Lab",
             "📱 Student Eco-Rewards & QR Hub",
             "💰 Financial ROI & Scenario Engine",
@@ -241,80 +261,66 @@ TEXT = {
         "t1_k1_t": "Energy Saved & Generated",
         "t1_k1_s": "<b>Real-Life Scale:</b> ≈ Powering 35 UAE homes for a full year",
         "t1_k2_t": "CO₂ Emissions Avoided",
-        "t1_k2_s": (
-            "<b>Real-Life Scale:</b> ≈ Taking 50 cars off Abu Dhabi roads"
-            " annually"
-        ),
+        "t1_k2_s": "<b>Real-Life Scale:</b> ≈ Taking 50 cars off Abu Dhabi roads annually",
         "t1_k3_t": "Landscaping Water Saved",
         "t1_k3_s": "<b>Real-Life Scale:</b> ≈ Filling 3.5 Olympic swimming pools",
         "t1_k4_t": "Landfill Waste Diverted",
-        "t1_k4_s": (
-            "<b>Real-Life Scale:</b> ≈ 18 full garbage trucks diverted per year"
-        ),
-        "t1_tel_h": "🏢 Live Zone-by-Zone Campus Telemetry & ESP32 Status",
+        "t1_k4_s": "<b>Real-Life Scale:</b> ≈ 18 full garbage trucks diverted per year",
+        "t1_tel_h": "🏢 Live Zone Telemetry: Timetable Prediction vs. Sensor Reading",
         "t1_toggle": (
             "🎛️ Simulate Students Leaving Engineering Building A (Test Live"
             " ESP32 Relay Cutoff)"
         ),
         "t1_toggle_msg": (
-            "⚡ ESP32 PIR Sensor detected 0 occupancy for >5 mins in"
-            " Engineering Building A -> Relay triggered AUTOMATIC AC CUTOFF"
-            " (12.4 kW saved instantaneously)!"
+            "⚡ ESP32 PIR Sensor detected 0 occupancy for >15 mins in"
+            " Engineering Building A -> Grace period expired -> Relay triggered"
+            " ECO MODE / AC CUTOFF (12.4 kW saved instantaneously)!"
         ),
         "csv_btn": "📥 Download Executive Campus Telemetry Report (CSV)",
-        "t1_mat_h": "🔥 Hot-Climate Challenge vs. EcoSmart Architectural Solution",
-        # TAB AI
-        "ai_header": (
-            "🤖 AI Predictive Pre-Cooling & Anomaly Detection Engine"
-            " (Random Forest + Isolation Forest)"
+        "t1_mat_h": "🔥 Hot-Climate Challenge vs. EcoSmart Unified Solution",
+        # TAB 2: SMART DECISION ENGINE
+        "de_header": "🧠 Unified Timetable + Sensor + Solar HVAC Decision Engine",
+        "de_desc": (
+            "Connects your class timetable file, live ESP32 occupancy sensors, and"
+            " solar canopy output in real time—resolving schedule vs. occupancy"
+            " conflicts automatically."
         ),
-        "ai_desc": (
-            "Trained on Abu Dhabi ambient temperature, solar irradiance, and"
-            " Liwa University class schedules to forecast next-24-hour HVAC"
-            " demand and detect equipment faults."
-        ),
-        "ai_sim_title": (
-            "🎛️ Live AI Scenario Controls (Test Real-Time Model Inference)"
-        ),
-        "ai_temp_slider": "Peak Outdoor Ambient Temperature (°C)",
-        "ai_occ_slider": "Campus Classroom Occupancy Rate (%)",
-        "ai_fault_toggle": (
-            "⚠️ Simulate HVAC Compressor / Open-Window Anomaly in Block A"
-        ),
+        "de_sim_title": "🎛️ Interactive Room & Solar Decision Simulator (Test Priority Rules)",
+        "de_room_sel": "Select Campus Room / Zone",
+        "de_tt_sel": "1. What does the Timetable say?",
+        "de_tt_opts": [
+            "Class On Now",
+            "Class Starting Soon (in 20 mins)",
+            "Class Ending Soon (No Next Class)",
+            "Room Free (Long Gap)",
+        ],
+        "de_sens_sel": "2. What does the ESP32 Sensor say?",
+        "de_sens_opts": [
+            "Occupied (People Detected)",
+            "Empty (0 People Detected)",
+        ],
+        "de_empty_mins": "Minutes Room Has Been Empty",
+        "de_solar_sel": "3. Solar Canopy Output Level",
+        "de_solar_opts": [
+            "High Solar Output (Midday Peak - 375 kWp)",
+            "Low Solar Output (Morning / Late Afternoon)",
+        ],
+        "de_temp_slider": "Outdoor Ambient Temperature (°C)",
+        "de_fault_toggle": "⚠️ Simulate Open-Window / Compressor Spike Anomaly",
         "grid_alert_text": (
-            "⚠️ EXTREME HEAT ALERT (>45°C): AI automatically initiated"
-            " campus-wide pre-cooling and deferred non-essential EV charging"
-            " to stabilize the Abu Dhabi grid!"
+            "⚠️ EXTREME HEAT ALERT (>45°C): Midday solar pre-cooling boosted"
+            " across all scheduled rooms and non-essential EV charging deferred"
+            " to protect the Abu Dhabi grid!"
         ),
-        "ai_kpi1_title": "AI Predicted Peak Cooling",
-        "ai_kpi1_sub": "Forecasted via Random Forest Regressor",
-        "ai_kpi2_title": "AI Pre-Cooling Shift Savings",
-        "ai_kpi2_sub": "Off-peak thermal storage optimization",
-        "ai_kpi3_title": "System Anomaly Status",
-        "ai_kpi3_normal": "🟢 Normal (99.2% Health)",
-        "ai_kpi3_alert": "🔴 Fault Detected (Block A)",
-        "ai_kpi3_sub_normal": "Isolation Forest: All zones within baseline",
-        "ai_kpi3_sub_alert": "Isolation Forest: +42% abnormal kW draw!",
-        "ai_chart_title": (
-            "AI 24-Hour Cooling Load Forecast vs. Smart Pre-Cooling Schedule"
-        ),
-        "ai_action_header": (
-            "⚡ Automated AI Control & Optimization Actions (ESP32 Relay"
-            " Commands)"
-        ),
-        "ai_col_zone": "Campus Zone",
-        "ai_col_pred": "AI Forecasted Load (kW)",
-        "ai_col_action": "Automated AI Action",
-        "ai_col_status": "ESP32 Relay State",
-        # TAB 2
-        "t2_sub": (
-            "☀️ Abu Dhabi May 2 Hourly Cooling & Solar Load Simulation"
-            " (Energy3D)"
-        ),
-        "t2_chart": (
-            "24-Hour Energy3D Simulation: Thermal Cooling vs. Solar Generation"
-            " (May 2)"
-        ),
+        "de_kpi1_t": "Timetable Prediction",
+        "de_kpi2_t": "Live Sensor Reading",
+        "de_kpi3_t": "Active HVAC Mode & Setpoint",
+        "de_kpi4_t": "Solar Pre-Cool Timing",
+        "de_tt_table_h": "📅 Live University Timetable Feed vs. Sensor Fusion Matrix",
+        "de_chart_title": "24-Hour Smart Pre-Cooling Load Curve (Timetable + Sensor + Solar Sync)",
+        # TAB 3 (Energy3D)
+        "t2_sub": "☀️ Abu Dhabi May 2 Hourly Cooling & Solar Load Simulation (Energy3D)",
+        "t2_chart": "24-Hour Energy3D Simulation: Thermal Cooling vs. Solar Generation (May 2)",
         "t2_b1_h": "🏛️ Architectural Passive Shading Insights",
         "t2_b1_li": """
             <li><b>Peak Solar Window:</b> Intense solar radiation hits between 7 AM and 5 PM in Abu Dhabi.</li>
@@ -327,7 +333,7 @@ TEXT = {
             <li><b>Annual Yield:</b> Generates 540,000 kWh/yr of clean renewable electricity.</li>
             <li><b>Microclimate Benefit:</b> Lowers ambient parking temperatures, protecting parked student and faculty vehicles from extreme heat.</li>
         """,
-        # TAB 3
+        # TAB 4 (Rewards)
         "t3_sub": "📱 Gamified Smart Recycling & QR Eco-Credit Generator",
         "t3_c1_h": "### Generate Student Eco-Reward QR Code",
         "t3_id": "Enter Liwa Student ID",
@@ -336,10 +342,7 @@ TEXT = {
         "t3_waste": "Waste Deposited",
         "t3_btn": "Generate Secure QR Token",
         "t3_cap": "Scan at Liwa Cafeteria Kiosk for Perks!",
-        "t3_ok": (
-            "QR Token Generated! Redeemable for cafeteria coffee & meal"
-            " discounts."
-        ),
+        "t3_ok": "QR Token Generated! Redeemable for cafeteria coffee & meal discounts.",
         "t3_c2_h": "### Live Smart Bin Telemetry & Fill Levels",
         "t3_cat_h": "### 🍔 Cafeteria Perks & Redemption Catalog",
         "t3_cat_li": """
@@ -348,7 +351,7 @@ TEXT = {
             <li><b>🅿️ 500 Eco-Credits:</b> Reserved Shaded Solar Parking Slot for 1 Month</li>
             <li><b>📚 1,000 Eco-Credits:</b> Bookstore Voucher for Engineering Textbooks</li>
         """,
-        # TAB 4
+        # TAB 5 (ROI)
         "t4_sub": "💵 CapEx vs. Utility Payback & 10-Year Scenario Modeling",
         "t4_desc": (
             "Use the interactive sliders below to model Liwa University's"
@@ -367,20 +370,20 @@ TEXT = {
         "impact_badge_title": "🌱 Live Student-Scaled Sustainability Impact Badge",
         "impact_slider": "Active Student Population Scale",
         "road_h": "### 🗺️ 3-Phase Campus Rollout & Feasibility Roadmap",
-        # TAB 5
+        # TAB 6 (BOM)
         "t5_sub": "🛠️ Non-Invasive ESP32 Retrofit Architecture & GPIO Pinout BOM",
         "t5_desc": (
             "EcoSmart is designed for **zero wall rewiring**, utilizing wireless"
             " ESP32 microcontrollers deployed modularly across existing campus"
             " infrastructure."
         ),
-        # TAB 6
+        # TAB 7 (SDGs)
         "t6_sub": "🌍 Strategic Alignment: UN SDGs & UAE Net Zero 2050",
         "t6_sdg1": (
             "<h4>🎯 UN SDG 9</h4><h3>Industry, Innovation &"
             " Infrastructure</h3><p>Deploying non-invasive IoT retrofits,"
-            " ESP32 microcontrollers, and digital twin analytics across Liwa"
-            " University with zero structural disruption.</p>"
+            " ESP32 microcontrollers, and timetable-linked digital analytics"
+            " across Liwa University with zero structural disruption.</p>"
         ),
         "t6_sdg2": (
             "<h4>🏙️ UN SDG 11</h4><h3>Sustainable Cities &"
@@ -396,8 +399,8 @@ TEXT = {
         ),
         "t6_uae_h": "### 🇦🇪 Contribution to UAE Net Zero 2050 Strategic Initiative",
         "t6_uae_li": """
-            <li><b>Decarbonization of Educational Campuses:</b> Direct reduction of energy consumption through passive window glazing optimization and automated HVAC scheduling.</li>
-            <li><b>Renewable Energy Integration:</b> 375 kWp solar canopy installation generating 540,000 kWh/yr of clean renewable electricity, directly decreasing reliance on grid fossil fuels.</li>
+            <li><b>Decarbonization of Educational Campuses:</b> Direct reduction of energy consumption through passive window glazing optimization and timetable-linked HVAC scheduling.</li>
+            <li><b>Renewable Energy Integration:</b> 375 kWp solar canopy installation generating 540,000 kWh/yr of clean renewable electricity, directly syncing midday solar peaks with classroom pre-cooling.</li>
             <li><b>Water Security in Arid Climates:</b> Smart soil-moisture sensors and weather-linked scheduling save 8,760 m³ of landscaping water annually, supporting UAE water conservation targets.</li>
             <li><b>Bilingual Arabic/English Accessibility:</b> Ensuring seamless deployment and adoption across national and international academic institutions in the UAE.</li>
         """,
@@ -405,8 +408,8 @@ TEXT = {
     "العربية (Arabic)": {
         "title": "🌿 حرم إيكوسمارت الذكي : مركز الموارد والاستدامة المتكامل",
         "subtitle": (
-            "التبريد السلبي، وأتمتة إنترنت الأشياء، وتحسين الذكاء الاصطناعي للتكييف"
-            " ومكافآت الطلاب"
+            "دمج التبريد السلبي، التحكم الذكي بالتكييف حسب الجدول الدراسي"
+            " والمستشعرات، المظلات الشمسية ومكافآت الطلاب"
         ),
         "header_team": (
             "<strong>فريق العمل:</strong> فاطمة فصيحة فيزور وشيفاني سروثي"
@@ -416,7 +419,7 @@ TEXT = {
         "header_sdgs": "<strong>أهداف التنمية المستدامة:</strong> 9، 11 و 12",
         "tabs": [
             "📊 مركز القيادة التنفيذي",
-            "🤖 مختبر الذكاء الاصطناعي للتكييف وكشف الأعطال",
+            "🧠 محرك قرارات التكييف (الجدول + المستشعر + الطاقة الشمسية)",
             "⚡ مختبر المحاكاة الحرارية والطاقة الشمسية",
             "📱 مركز مكافآت الطلاب وإعادة التدوير",
             "💰 محرك العائد المالي والجدوى",
@@ -424,87 +427,68 @@ TEXT = {
             "🌍 أهداف التنمية المستدامة وحياد الإمارات 2050",
         ],
         # TAB 1 (ARABIC)
-        "t1_sub": (
-            "🚀 الأثر السنوي الشامل على مستوى الحرم الجامعي والمقياس الواقعي"
-        ),
+        "t1_sub": "🚀 الأثر السنوي الشامل على مستوى الحرم الجامعي والمقياس الواقعي",
         "t1_k1_t": "الطاقة الموفرة والمولدة سنوياً",
-        "t1_k1_s": (
-            "<b>المقياس الواقعي:</b> ≈ تزويد 35 منزلاً إماراتياً بالكهرباء لمدة"
-            " عام كامل"
-        ),
+        "t1_k1_s": "<b>المقياس الواقعي:</b> ≈ تزويد 35 منزلاً إماراتياً بالكهرباء لمدة عام كامل",
         "t1_k2_t": "انبعاثات ثاني أكسيد الكربون المتجنبة",
-        "t1_k2_s": (
-            "<b>المقياس الواقعي:</b> ≈ إزالة 50 سيارة من شوارع أبوظبي سنوياً"
-        ),
+        "t1_k2_s": "<b>المقياس الواقعي:</b> ≈ إزالة 50 سيارة من شوارع أبوظبي سنوياً",
         "t1_k3_t": "مياه الري الموفرة سنوياً",
         "t1_k3_s": "<b>المقياس الواقعي:</b> ≈ ملء 3.5 مسابح أولمبية بالكامل",
         "t1_k4_t": "النفايات المحولة عن المكبات",
         "t1_k4_s": "<b>المقياس الواقعي:</b> ≈ تقليل 18 شاحنة نفايات ممتلئة سنوياً",
-        "t1_tel_h": "🏢 القياس عن بُعد المباشر لمناطق الحرم الجامعي وحالة ESP32",
+        "t1_tel_h": "🏢 القياس المباشر للمناطق: توقع الجدول الدراسي مقابل قراءة المستشعر",
         "t1_toggle": (
             "🎛️ محاكاة مغادرة الطلاب لمبنى الهندسة (أ) (اختبار الفصل التلقائي"
             " لمرحل ESP32)"
         ),
         "t1_toggle_msg": (
-            "⚡ رصد مستشعر الحركة ESP32 خلو مبنى الهندسة (أ) لأكثر من 5 دقائق"
-            " -> تم تفعيل الفصل التلقائي للتكييف (توفير فوري بمقدار 12.4"
-            " كيلوواط)!"
+            "⚡ رصد مستشعر الحركة ESP32 خلو مبنى الهندسة (أ) لأكثر من 15 دقيقة"
+            " -> انتهت فترة السماح -> تم التحويل التلقائي للوضع الاقتصادي (توفير"
+            " فوري بمقدار 12.4 كيلوواط)!"
         ),
         "csv_btn": "📥 تحميل تقرير القياسات التنفيذي للحرم الجامعي (CSV)",
-        "t1_mat_h": (
-            "🔥 تحديات المناخ الحار مقابل حلول إيكوسمارت المعمارية والذكية"
+        "t1_mat_h": "🔥 تحديات المناخ الحار مقابل حلول إيكوسمارت المتكاملة",
+        # TAB 2: SMART DECISION ENGINE (ARABIC)
+        "de_header": "🧠 محرك قرارات التكييف الذكي (الجدول الدراسي + المستشعرات + الطاقة الشمسية)",
+        "de_desc": (
+            "يربط ملف الجداول الدراسية للقاعات مع مستشعرات الإشغال ESP32 وإنتاج"
+            " المظلات الشمسية لحظياً لحل أي تعارض بين الجدول والواقع الفعلي."
         ),
-        # TAB AI (ARABIC)
-        "ai_header": (
-            "🤖 محرك الذكاء الاصطناعي للتبريد الاستباقي وكشف الأعطال"
-            " (Random Forest + Isolation Forest)"
-        ),
-        "ai_desc": (
-            "نموذج تعلم آلي مُدرَّب على بيانات الطقس في أبوظبي وجداول المحاضرات"
-            " في جامعة ليوا للتنبؤ بأحمال التكييف خلال 24 ساعة واكتشاف الهدر"
-            " تلقائياً."
-        ),
-        "ai_sim_title": (
-            "🎛️ محاكاة الذكاء الاصطناعي المباشرة (اختبار التنبؤ الفوري)"
-        ),
-        "ai_temp_slider": "ذروة درجة الحرارة الخارجية في أبوظبي (°م)",
-        "ai_occ_slider": "نسبة إشغال القاعات الدراسية في الحرم الجامعي (%)",
-        "ai_fault_toggle": (
-            "⚠️ محاكاة عطل في ضاغط التكييف أو نافذة مفتوحة (مبنى أ)"
-        ),
+        "de_sim_title": "🎛️ محاكي القواعد الذكية للقاعات والطاقة الشمسية (اختبر الأولويات)",
+        "de_room_sel": "اختر القاعة أو المنطقة الجامعية",
+        "de_tt_sel": "1. ماذا يقول الجدول الدراسي؟",
+        "de_tt_opts": [
+            "توجد محاضرة الآن",
+            "محاضرة ستبدأ قريباً (خلال 20 دقيقة)",
+            "محاضرة تنتهي قريباً (لا توجد محاضرة بعدها)",
+            "القاعة فارغة في الجدول (فترة طويلة)",
+        ],
+        "de_sens_sel": "2. ماذا يقول مستشعر الحركة ESP32؟",
+        "de_sens_opts": [
+            "مشغولة (تم رصد طلاب داخل القاعة)",
+            "فارغة (لا يوجد أحد داخل القاعة)",
+        ],
+        "de_empty_mins": "عدد دقائق خلو القاعة حالياً",
+        "de_solar_sel": "3. مستوى إنتاج المظلات الشمسية",
+        "de_solar_opts": [
+            "إنتاج شمسي مرتفع (ذروة الظهيرة - 375 كيلوواط)",
+            "إنتاج شمسي منخفض (الصباح الباكر / نهاية اليوم)",
+        ],
+        "de_temp_slider": "درجة الحرارة الخارجية في أبوظبي (°م)",
+        "de_fault_toggle": "⚠️ محاكاة شذوذ استهلاك الطاقة (نافذة مفتوحة / عطل ضاغط)",
         "grid_alert_text": (
-            "⚠️ تنبيه حرارة شديدة (>45°م): قام الذكاء الاصطناعي تلقائياً بتفعيل"
-            " التبريد الاستباقي وتأجيل شحن السيارات الكهربائية غير الضروري"
-            " لحماية شبكة أبوظبي الكهربائية!"
+            "⚠️ تنبيه حرارة شديدة (>45°م): تم تفعيل التبريد الاستباقي عبر الطاقة"
+            " الشمسية وتأجيل شحن المركبات غير الضروري لحماية شبكة أبوظبي!"
         ),
-        "ai_kpi1_title": "ذروة التبريد المتوقعة (AI)",
-        "ai_kpi1_sub": "تنبؤ عبر خوارزمية الغابة العشوائية",
-        "ai_kpi2_title": "وفورات التبريد الاستباقي الذكي",
-        "ai_kpi2_sub": "نقل الأحمال الحرارية خارج أوقات الذروة",
-        "ai_kpi3_title": "حالة كشف الأعطال الذكي",
-        "ai_kpi3_normal": "🟢 طبيعي (كفاءة 99.2%)",
-        "ai_kpi3_alert": "🔴 تم رصد عطل (مبنى أ)",
-        "ai_kpi3_sub_normal": "جميع المناطق تعمل ضمن المعدل الطبيعي",
-        "ai_kpi3_sub_alert": "استهلاك طاقة غير طبيعي (+42% فوق المتوقع)!",
-        "ai_chart_title": (
-            "توقعات الذكاء الاصطناعي لأحمال التبريد (24 ساعة) مقابل جدول"
-            " التبريد الاستباقي"
-        ),
-        "ai_action_header": (
-            "⚡ إجراءات التحكم والتحسين التلقائية (أوامر متحكمات ESP32)"
-        ),
-        "ai_col_zone": "منطقة الحرم الجامعي",
-        "ai_col_pred": "الحمل المتوقع (كيلوواط)",
-        "ai_col_action": "إجراء الذكاء الاصطناعي التلقائي",
-        "ai_col_status": "حالة مرحّل ESP32",
-        # TAB 2 (ARABIC)
-        "t2_sub": (
-            "☀️ محاكاة أحمال التبريد والطاقة الشمسية في أبوظبي ليوم 2 مايو"
-            " (Energy3D)"
-        ),
-        "t2_chart": (
-            "محاكاة 24 ساعة: التبريد الحراري مقابل توليد الطاقة الشمسية (2 مايو)"
-        ),
+        "de_kpi1_t": "توقع الجدول الدراسي",
+        "de_kpi2_t": "قراءة المستشعر الحية",
+        "de_kpi3_t": "وضع التكييف ودرجة الحرارة",
+        "de_kpi4_t": "توقيت التبريد الشمسي",
+        "de_tt_table_h": "📅 مصفوفة مطابقة الجدول الدراسي الحي مع قراءات المستشعرات",
+        "de_chart_title": "منحنى التبريد الذكي على مدار 24 ساعة (دمج الجدول + المستشعر + الشمس)",
+        # TAB 3 (Energy3D - ARABIC)
+        "t2_sub": "☀️ محاكاة أحمال التبريد والطاقة الشمسية في أبوظبي ليوم 2 مايو (Energy3D)",
+        "t2_chart": "محاكاة 24 ساعة: التبريد الحراري مقابل توليد الطاقة الشمسية (2 مايو)",
         "t2_b1_h": "🏛️ رؤى التظليل السلبي والتصميم المعماري",
         "t2_b1_li": """
             <li><b>ذروة الإشعاع الشمسي:</b> تبلغ ذروة الحرارة الشمسية بين الساعة 7 صباحاً و5 مساءً في أبوظبي.</li>
@@ -517,10 +501,8 @@ TEXT = {
             <li><b>الإنتاج السنوي:</b> توليد 540,000 كيلوواط ساعة/سنة من الكهرباء النظيفة المتجددة.</li>
             <li><b>تحسين المناخ المحلي:</b> خفض حرارة مواقف السيارات وحماية مركبات الطلاب وأعضاء هيئة التدريس.</li>
         """,
-        # TAB 3 (ARABIC)
-        "t3_sub": (
-            "📱 نظام إعادة التدوير الذكي ومولد رموز المكافآت الطلابية (QR)"
-        ),
+        # TAB 4 (Rewards - ARABIC)
+        "t3_sub": "📱 نظام إعادة التدوير الذكي ومولد رموز المكافآت الطلابية (QR)",
         "t3_c1_h": "### توليد رمز المكافأة البيئية للطالب (QR)",
         "t3_id": "أدخل الرقم الجامعي للطالب في جامعة ليوا",
         "t3_name": "اسم الطالب",
@@ -528,9 +510,7 @@ TEXT = {
         "t3_waste": "نوع وكمية النفايات المودعة",
         "t3_btn": "توليد رمز QR الآمن للمكافأة",
         "t3_cap": "امسح الرمز في كافتيريا جامعة ليوا للحصول على الخصم!",
-        "t3_ok": (
-            "تم توليد رمز المكافأة بنجاح! قابل للاستبدال بخصومات القهوة والوجبات."
-        ),
+        "t3_ok": "تم توليد رمز المكافأة بنجاح! قابل للاستبدال بخصومات القهوة والوجبات.",
         "t3_c2_h": "### القياس المباشر لمستوى امتلاء الحاويات الذكية",
         "t3_cat_h": "### 🍔 كتالوج مكافآت الكافتيريا والحرم الجامعي",
         "t3_cat_li": """
@@ -539,10 +519,8 @@ TEXT = {
             <li><b>🅿️ 500 نقطة بيئية:</b> موقف سيارة مظلل بالطاقة الشمسية محجوز لمدة شهر</li>
             <li><b>📚 1,000 نقطة بيئية:</b> قسيمة شرائية من مكتبة الجامعة للكتب الهندسية</li>
         """,
-        # TAB 4 (ARABIC)
-        "t4_sub": (
-            "💵 تحليل النفقات الرأسمالية وفترة الاسترداد والعائد لعشر سنوات"
-        ),
+        # TAB 5 (ROI - ARABIC)
+        "t4_sub": "💵 تحليل النفقات الرأسمالية وفترة الاسترداد والعائد لعشر سنوات",
         "t4_desc": (
             "استخدم أشرطة التمرير التفاعلية أدناه لمحاكاة الاستثمار الرأسمالي"
             " وتعرفة الكهرباء والعوائد المالية طويلة الأجل لجامعة ليوا."
@@ -556,27 +534,22 @@ TEXT = {
         "t4_k2_s": "عائد استثماري سريع للبنية التحتية الخضراء",
         "t4_k3_t": "صافي الوفورات التراكمية (10 سنوات)",
         "t4_k3_s": "صافي الربح التشغيلي بعد استرداد رأس المال",
-        "impact_badge_title": (
-            "🌱 شارة الأثر البيئي الديناميكي (حسب عدد الطلاب)"
-        ),
+        "impact_badge_title": "🌱 شارة الأثر البيئي الديناميكي (حسب عدد الطلاب)",
         "impact_slider": "مقياس عدد الطلاب النشطين في الحرم",
         "road_h": "### 🗺️ خارطة طريق التنفيذ والجدوى على 3 مراحل",
-        # TAB 5 (ARABIC)
+        # TAB 6 (BOM - ARABIC)
         "t5_sub": "🛠️ معمارية التحديث اللاسلكي ESP32 وجدول توصيل المستشعرات",
         "t5_desc": (
             "تم تصميم نظام إيكوسمارت **دون الحاجة لأي تكسير أو إعادة تمديد"
             " للأسلاك**، باستخدام متحكمات ESP32 اللاسلكية القابلة للتركيب"
             " المباشر."
         ),
-        # TAB 6 (ARABIC)
-        "t6_sub": (
-            "🌍 التوافق الاستراتيجي: أهداف التنمية المستدامة ومبادرة الإمارات"
-            " للحياد المناخي 2050"
-        ),
+        # TAB 7 (SDGs - ARABIC)
+        "t6_sub": "🌍 التوافق الاستراتيجي: أهداف التنمية المستدامة ومبادرة الإمارات للحياد المناخي 2050",
         "t6_sdg1": (
             "<h4>🎯 الهدف 9</h4><h3>الصناعة والابتكار والهياكل"
             " الأساسية</h3><p>نشر حلول إنترنت الأشياء اللاسلكية ومتحكمات ESP32"
-            " والتوأم الرقمي في جامعة ليوا دون أي تعطيل للبنية التحتية.</p>"
+            " وربطها بالجداول الدراسية في جامعة ليوا دون أي تعطيل للبنية التحتية.</p>"
         ),
         "t6_sdg2": (
             "<h4>🏙️ الهدف 11</h4><h3>مدن ومجتمعات محلية مستدامة</h3><p>تحسين"
@@ -588,13 +561,10 @@ TEXT = {
             " نسبة إعادة التدوير ثلاث مرات من 15% إلى 45% عبر الحاويات الذكية"
             " وتقليل مياه الري بنسبة 30%.</p>"
         ),
-        "t6_uae_h": (
-            "### 🇦🇪 المساهمة في المبادرة الاستراتيجية للحياد المناخي 2050"
-            " لدولة الإمارات"
-        ),
+        "t6_uae_h": "### 🇦🇪 المساهمة في المبادرة الاستراتيجية للحياد المناخي 2050 لدولة الإمارات",
         "t6_uae_li": """
             <li><b>إزالة الكربون من المؤسسات التعليمية:</b> خفض مباشر لاستهلاك الطاقة عبر تحسين النوافذ السلبية والجدولة الذكية للتكييف.</li>
-            <li><b>دمج الطاقة المتجددة:</b> تركيب مظلات شمسية بقدرة 375 كيلوواط ذروة تنتج 540,000 كيلوواط ساعة/سنة من الكهرباء النظيفة.</li>
+            <li><b>دمج الطاقة المتجددة:</b> تركيب مظلات شمسية بقدرة 375 كيلوواط ذروة تنتج 540,000 كيلوواط ساعة/سنة من الكهرباء النظيفة ومزامنتها مع التبريد الاستباقي.</li>
             <li><b>الأمن المائي في المناخات الجافة:</b> مستشعرات رطوبة التربة والجدولة الذكية توفر 8,760 متر مكعب من مياه الري سنوياً.</li>
             <li><b>دعم اللغتين العربية والإنجليزية:</b> ضمان سهولة التطبيق والتبني في كافة الجامعات الوطنية والدولية في دولة الإمارات.</li>
         """,
@@ -603,14 +573,14 @@ TEXT = {
 
 t = TEXT[lang]
 
-# --- CLEAN LOGO DISPLAY (NO STRAY BOXES) ---
+# --- CLEAN LOGO DISPLAY ---
 try:
-  st.image("liwa_logo.png", width=220)
+    st.image("liwa_logo.png", width=220)
 except Exception:
-  st.markdown(
-      "<h3 style='color: #143625; margin:0;'>Liwa University</h3>",
-      unsafe_allow_html=True,
-  )
+    st.markdown(
+        "<h3 style='color: #143625; margin:0;'>Liwa University</h3>",
+        unsafe_allow_html=True,
+    )
 
 st.markdown(
     f"""
@@ -623,920 +593,1075 @@ st.markdown(
 )
 
 # --- TOP NAVIGATION TABS ---
-tab1, tab_ai, tab2, tab3, tab4, tab5, tab6 = st.tabs(t["tabs"])
+tab1, tab_de, tab2, tab3, tab4, tab5, tab6 = st.tabs(t["tabs"])
 
 # ==========================================
 # TAB 1: EXECUTIVE COMMAND CENTER
 # ==========================================
 with tab1:
-  st.subheader(t["t1_sub"])
+    st.subheader(t["t1_sub"])
 
-  col1, col2, col3, col4 = st.columns(4)
-  with col1:
-    st.markdown(
-        f"""
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown(
+            f"""
             <div class="metric-card">
                 <h4>{t['t1_k1_t']}</h4>
                 <h2>568,500 kWh</h2>
                 <p>{t['t1_k1_s']}</p>
             </div>
         """,
-        unsafe_allow_html=True,
-    )
-  with col2:
-    st.markdown(
-        f"""
+            unsafe_allow_html=True,
+        )
+    with col2:
+        st.markdown(
+            f"""
             <div class="metric-card">
                 <h4>{t['t1_k2_t']}</h4>
                 <h2>227.4 Tons</h2>
                 <p>{t['t1_k2_s']}</p>
             </div>
         """,
-        unsafe_allow_html=True,
-    )
-  with col3:
-    st.markdown(
-        f"""
+            unsafe_allow_html=True,
+        )
+    with col3:
+        st.markdown(
+            f"""
             <div class="metric-card">
                 <h4>{t['t1_k3_t']}</h4>
                 <h2>8,760 m³</h2>
                 <p>{t['t1_k3_s']}</p>
             </div>
         """,
-        unsafe_allow_html=True,
-    )
-  with col4:
-    st.markdown(
-        f"""
+            unsafe_allow_html=True,
+        )
+    with col4:
+        st.markdown(
+            f"""
             <div class="metric-card">
                 <h4>{t['t1_k4_t']}</h4>
                 <h2>109.5 Tons</h2>
                 <p>{t['t1_k4_s']}</p>
             </div>
         """,
-        unsafe_allow_html=True,
+            unsafe_allow_html=True,
+        )
+
+    st.markdown(f"### {t['t1_tel_h']}")
+
+    simulate_vacant = st.toggle(t["t1_toggle"], value=False)
+    if simulate_vacant:
+        st.success(t["t1_toggle_msg"])
+
+    if lang == "English":
+        eng_occ = (
+            "Empty >15m (Grace Period Expired)"
+            if simulate_vacant
+            else "Occupied (42 students)"
+        )
+        eng_hvac = "0.0 kW (Eco-Cutoff)" if simulate_vacant else "12.4 kW (22°C Cool)"
+        eng_health = (
+            "🟡 Eco-Mode Triggered" if simulate_vacant else "🟢 Cooling Active"
+        )
+
+        zones_df = pd.DataFrame({
+            "Campus Zone": [
+                "Engineering Building A",
+                "Library Atrium Hub",
+                "Science Labs Block",
+                "Student Activity Center",
+                "Admin & Faculty Tower",
+                "Parking Canopy Solar Array",
+            ],
+            "Timetable Prediction": [
+                "Class Scheduled (10:00 - 11:30)",
+                "Open Study Hours",
+                "Class Starting in 20 mins",
+                "Peak Lunch & Club Period",
+                "Free Until 2:00 PM",
+                "Midday Solar Peak Window",
+            ],
+            "Live Sensor Reading": [
+                eng_occ,
+                "Occupied (85 students)",
+                "Empty (0 students)",
+                "Occupied (120 students)",
+                "Empty (0 staff)",
+                "375 kWp Generating",
+            ],
+            "HVAC Load & Setpoint": [
+                eng_hvac,
+                "18.2 kW (22°C Cool)",
+                "6.5 kW (Solar Pre-Cool)",
+                "22.5 kW (22°C Cool)",
+                "2.1 kW (26°C Eco)",
+                "-145 kW (Net Export)",
+            ],
+            "Decision Engine State": [
+                eng_health,
+                "🟢 Rule 1: Sensor Override",
+                "🔵 Rule 2: Pre-Cooling Early",
+                "🟢 Rule 1: Occupied Cool",
+                "🟡 Rule 3: Free -> Eco",
+                "☀️ Feeding Pre-Cool Load",
+            ],
+        })
+    else:
+        eng_occ = (
+            "فارغة >15 دقيقة (انتهت مهلة الانتظار)"
+            if simulate_vacant
+            else "مشغولة (42 طالباً)"
+        )
+        eng_hvac = "0.0 كيلوواط (مغلق)" if simulate_vacant else "12.4 كيلوواط (تبريد 22°م)"
+        eng_health = (
+            "🟡 وضع التوفير نشط" if simulate_vacant else "🟢 تبريد نشط"
+        )
+
+        zones_df = pd.DataFrame({
+            "منطقة الحرم الجامعي": [
+                "مبنى الهندسة (أ)",
+                "بهو المكتبة الرئيسية",
+                "مبنى مختبرات العلوم",
+                "مركز الأنشطة الطلابية",
+                "برج الإدارة وأعضاء هيئة التدريس",
+                "مظلات مواقف السيارات الشمسية",
+            ],
+            "توقع الجدول الدراسي": [
+                "محاضرة مجدولة (10:00 - 11:30)",
+                "ساعات دراسة مفتوحة",
+                "محاضرة تبدأ خلال 20 دقيقة",
+                "فترة ذروة الأنشطة والاستراحة",
+                "فارغ حتى الساعة 2:00 ظهراً",
+                "ذروة الإشعاع الشمسي",
+            ],
+            "قراءة المستشعر الحية": [
+                eng_occ,
+                "مشغول (85 طالباً)",
+                "فارغة (0 طلاب)",
+                "مشغول (120 طالباً)",
+                "فارغ (0 موظفين)",
+                "توليد 375 كيلوواط ذروة",
+            ],
+            "حمل التكييف ودرجة الحرارة": [
+                eng_hvac,
+                "18.2 كيلوواط (22°م)",
+                "6.5 كيلوواط (تبريد استباقي)",
+                "22.5 كيلوواط (22°م)",
+                "2.1 كيلوواط (26°م اقتصادي)",
+                "-145 كيلوواط (تصدير صافي)",
+            ],
+            "حالة محرك القرار": [
+                eng_health,
+                "🟢 قاعدة 1: إشغال فعلي",
+                "🔵 قاعدة 2: تبريد مبكر",
+                "🟢 قاعدة 1: إشغال فعلي",
+                "🟡 قاعدة 3: فارغ -> توفير",
+                "☀️ تغذية التبريد الاستباقي",
+            ],
+        })
+
+    st.dataframe(zones_df, use_container_width=True)
+
+    csv_data = zones_df.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        label=t["csv_btn"],
+        data=csv_data,
+        file_name="EcoSmart_Campus_Telemetry_Report.csv",
+        mime="text/csv",
     )
 
-  st.markdown(f"### {t['t1_tel_h']}")
-
-  # LIVE INTERACTIVE ESP32 CONTROL & OPTIMIZE TOGGLE
-  simulate_vacant = st.toggle(t["t1_toggle"], value=False)
-  if simulate_vacant:
-    st.success(t["t1_toggle_msg"])
-
-  if lang == "English":
-    eng_occ = (
-        "Vacant (ESP32 Relay Cutoff Active)"
-        if simulate_vacant
-        else "Occupied (42 students)"
-    )
-    eng_hvac = "0.0 kW (Saved)" if simulate_vacant else "12.4 kW"
-    eng_health = (
-        "🟡 Eco-Cutoff Triggered" if simulate_vacant else "🟢 Online"
-    )
-
-    zones_df = pd.DataFrame({
-        "Campus Zone": [
-            "Engineering Building A",
-            "Library Atrium Hub",
-            "Science Labs Block",
-            "Student Activity Center",
-            "Admin & Faculty Tower",
-            "Parking Canopy Solar Array",
-        ],
-        "Occupancy Status": [
-            eng_occ,
-            "Occupied (85 students)",
-            "Vacant (AC Cutoff Active)",
-            "Occupied (120 students)",
-            "Vacant (Eco-Mode)",
-            "Active Generation (375 kWp)",
-        ],
-        "Indoor Air Quality (CO₂)": [
-            "430 ppm (Fresh)" if simulate_vacant else "650 ppm (Fresh)",
-            "780 ppm (Good)",
-            "410 ppm (Fresh)",
-            "920 ppm (Acceptable)",
-            "500 ppm (Fresh)",
-            "N/A (Outdoor)",
-        ],
-        "HVAC Load (kW)": [
-            eng_hvac,
-            "18.2 kW",
-            "0.0 kW (Saved)",
-            "22.5 kW",
-            "8.1 kW",
-            "-145 kW (Net Export)",
-        ],
-        "System Health": [
-            eng_health,
-            "🟢 Online",
-            "🟢 Online",
-            "🟢 Online",
-            "🟢 Online",
-            "☀️ Peak Generating",
-        ],
-    })
-  else:
-    eng_occ = (
-        "شاغر (تم فصل التكييف تلقائياً عبر ESP32)"
-        if simulate_vacant
-        else "مشغول (42 طالباً)"
-    )
-    eng_hvac = "0.0 كيلوواط (تم التوفير)" if simulate_vacant else "12.4 كيلوواط"
-    eng_health = (
-        "🟡 وضع التوفير نشط" if simulate_vacant else "🟢 متصل ويعمل"
-    )
-
-    zones_df = pd.DataFrame({
-        "منطقة الحرم الجامعي": [
-            "مبنى الهندسة (أ)",
-            "بهو المكتبة الرئيسية",
-            "مبنى مختبرات العلوم",
-            "مركز الأنشطة الطلابية",
-            "برج الإدارة وأعضاء هيئة التدريس",
-            "مظلات مواقف السيارات الشمسية",
-        ],
-        "حالة الإشغال": [
-            eng_occ,
-            "مشغول (85 طالباً)",
-            "شاغر (تم فصل التكييف)",
-            "مشغول (120 طالباً)",
-            "شاغر (الوضع الاقتصادي)",
-            "توليد نشط (375 كيلوواط ذروة)",
-        ],
-        "جودة الهواء الداخلي (CO₂)": [
-            "430 ppm (نقي)" if simulate_vacant else "650 ppm (نقي)",
-            "780 ppm (جيد)",
-            "410 ppm (نقي)",
-            "920 ppm (مقبول)",
-            "500 ppm (نقي)",
-            "غير منطبق (خارجي)",
-        ],
-        "حمل التكييف (كيلوواط)": [
-            eng_hvac,
-            "18.2 كيلوواط",
-            "0.0 كيلوواط (تم التوفير)",
-            "22.5 كيلوواط",
-            "8.1 كيلوواط",
-            "-145 كيلوواط (تصدير صافي)",
-        ],
-        "حالة النظام": [
-            eng_health,
-            "🟢 متصل ويعمل",
-            "🟢 متصل ويعمل",
-            "🟢 متصل ويعمل",
-            "🟢 متصل ويعمل",
-            "☀️ ذروة التوليد الشمسي",
-        ],
-    })
-
-  st.dataframe(zones_df, use_container_width=True)
-
-  # DOWNLOAD EXECUTIVE REPORT CSV BUTTON
-  csv_data = zones_df.to_csv(index=False).encode("utf-8")
-  st.download_button(
-      label=t["csv_btn"],
-      data=csv_data,
-      file_name="EcoSmart_Campus_Telemetry_Report.csv",
-      mime="text/csv",
-  )
-
-  st.markdown(f"### {t['t1_mat_h']}")
-  if lang == "English":
-    matrix_df = pd.DataFrame({
-        "Challenge Domain": [
-            "Solar Heat Gain",
-            "Empty-Room AC Idle",
-            "Landscape Watering",
-            "Solid Waste Management",
-            "Student Engagement",
-        ],
-        "Abu Dhabi Baseline Issue": [
-            "70%+ cooling share from unshaded 5×3 m windows",
-            "AC & lights run continuously in empty lecture halls",
-            "Timer-based irrigation wastes 80,000 L/day",
-            "Low recycling diversion rate (only 15%)",
-            "Zero visibility or incentive for student participation",
-        ],
-        "EcoSmart Upgrades": [
-            "Passive glazing reduction to 3×1 m + overhang louvers (−28% peak)",
-            "ESP32 PIR motion & CO₂ nodes cut idle AC (21,000 kWh/yr saved)",
-            (
-                "Soil moisture probes & weather triggers cut water by 30%"
-                " (56,000 L/day)"
-            ),
-            "Ultrasonic smart bins + QR rewards triple diversion to 45%",
-            "QR-linked smart bins award digital credits for cafeteria perks",
-        ],
-    })
-  else:
-    matrix_df = pd.DataFrame({
-        "مجال التحدي": [
-            "اكتساب الحرارة الشمسية",
-            "تشغيل التكييف في القاعات الفارغة",
-            "ري المسطحات الخضراء",
-            "إدارة النفايات الصلبة",
-            "مشاركة وتفاعل الطلاب",
-        ],
-        "المشكلة الحالية في أبوظبي": [
-            "أكثر من 70% من حمل التبريد بسبب النوافذ الكبيرة غير المظللة (5×3 م)",
-            "استمرار عمل التكييف والإضاءة في القاعات الدراسية الفارغة",
-            "الري المؤقت التقليدي يهدر 80,000 لتر يومياً",
-            "انخفاض معدل إعادة التدوير (15% فقط)",
-            "غياب الحوافز أو المتابعة لمشاركة الطلاب في الاستدامة",
-        ],
-        "حلول إيكوسمارت الذكية": [
-            "تقليص النوافذ إلى 3×1 م مع كاسرات شمسية (خفض الذروة بنسبة 28%)",
-            "مستشعرات الحركة ESP32 تفصل التكييف تلقائياً (توفير 21,000 كيلوواط ساعة/سنة)",
-            "مستشعرات رطوبة التربة والطقس تخفض المياه بنسبة 30% (56,000 لتر/يوم)",
-            "حاويات ذكية بالموجات فوق الصوتية + مكافآت QR ترفع التدوير إلى 45%",
-            "منح نقاط رقمية فورية عبر QR لاستبدالها في كافتيريا الجامعة",
-        ],
-    })
-  st.table(matrix_df)
+    st.markdown(f"### {t['t1_mat_h']}")
+    if lang == "English":
+        matrix_df = pd.DataFrame({
+            "Challenge Domain": [
+                "Solar Heat Gain",
+                "Schedule vs. Reality Mismatch",
+                "Midday Peak Grid Stress",
+                "Landscape Watering",
+                "Solid Waste & Engagement",
+            ],
+            "Abu Dhabi Baseline Issue": [
+                "70%+ cooling share from unshaded 5×3 m windows",
+                "AC runs in empty rooms when classes cancel, or rooms stay hot before class",
+                "Cooling peaks at 2 PM while solar canopy peaks at noon",
+                "Timer-based irrigation wastes 80,000 L/day",
+                "Low recycling diversion (15%) with zero student incentives",
+            ],
+            "EcoSmart Unified Solution": [
+                "Passive glazing reduction to 3×1 m + overhang louvers (−28% peak)",
+                "Timetable + Sensor priority rules (15-min grace period + pre-cooling)",
+                "Solar-linked pre-cooling shifts cooling into high-solar noon hours",
+                "Soil moisture probes & weather triggers cut water by 30% (56,000 L/day)",
+                "Ultrasonic smart bins + QR cafeteria rewards triple diversion to 45%",
+            ],
+        })
+    else:
+        matrix_df = pd.DataFrame({
+            "مجال التحدي": [
+                "اكتساب الحرارة الشمسية",
+                "التعارض بين الجدول الدراسي والواقع",
+                "ذروة الأحمال الكهربائية ظهراً",
+                "ري المسطحات الخضراء",
+                "النفايات الصلبة وتفاعل الطلاب",
+            ],
+            "المشكلة الحالية في أبوظبي": [
+                "أكثر من 70% من حمل التبريد بسبب النوافذ الكبيرة غير المظللة (5×3 م)",
+                "عمل التكييف في قاعات ألغيت محاضراتها أو بقاء القاعة حارة قبل المحاضرة",
+                "ذروة التبريد الساعة 2 ظهراً بينما ذروة الطاقة الشمسية عند الظهر",
+                "الري المؤقت التقليدي يهدر 80,000 لتر يومياً",
+                "انخفاض معدل إعادة التدوير (15% فقط) وغياب الحوافز",
+            ],
+            "حلول إيكوسمارت المتكاملة": [
+                "تقليص النوافذ إلى 3×1 م مع كاسرات شمسية (خفض الذروة بنسبة 28%)",
+                "قواعد أولوية تربط الجدول بالمستشعر (مهلة 15 دقيقة + تبريد استباقي)",
+                "مزامنة التبريد الاستباقي مع ساعات ذروة إنتاج المظلات الشمسية",
+                "مستشعرات رطوبة التربة والطقس تخفض المياه بنسبة 30% (56,000 لتر/يوم)",
+                "حاويات ذكية بالموجات فوق الصوتية + مكافآت QR ترفع التدوير إلى 45%",
+            ],
+        })
+    st.table(matrix_df)
 
 # ==========================================
-# TAB AI: AI PREDICTIVE HVAC & ANOMALY LAB
+# TAB 2: UNIFIED TIMETABLE + SENSOR + SOLAR ENGINE
 # ==========================================
-with tab_ai:
-  st.subheader(t["ai_header"])
-  st.markdown(t["ai_desc"])
+with tab_de:
+    st.subheader(t["de_header"])
+    st.markdown(t["de_desc"])
 
-  @st.cache_resource
-  def train_hvac_ai_model():
-    np.random.seed(42)
-    n_samples = 500
-    hours_data = np.random.randint(0, 24, n_samples)
-    temp_data = np.random.uniform(26, 48, n_samples)
-    occ_data = np.random.uniform(0, 100, n_samples)
-    cooling_kw = (
-        0.35 * np.maximum(0, temp_data - 22)
-        + 0.08 * occ_data
-        + 4.5 * np.sin(np.pi * np.clip((hours_data - 6) / 14, 0, 1))
-        + np.random.normal(0, 0.4, n_samples)
-    )
-    X_train = pd.DataFrame(
-        {"hour": hours_data, "temp": temp_data, "occ": occ_data}
-    )
-    rf_model = RandomForestRegressor(n_estimators=60, random_state=42)
-    rf_model.fit(X_train, cooling_kw)
+    st.markdown(f"#### {t['de_sim_title']}")
 
-    iso_model = IsolationForest(contamination=0.05, random_state=42)
-    iso_model.fit(X_train.assign(kw=cooling_kw))
-    return rf_model, iso_model
+    col_ctrl1, col_ctrl2, col_ctrl3 = st.columns(3)
+    with col_ctrl1:
+        tt_choice = st.selectbox(t["de_tt_sel"], t["de_tt_opts"])
+        peak_temp = st.slider(t["de_temp_slider"], 28, 50, 44)
+    with col_ctrl2:
+        sens_choice = st.selectbox(t["de_sens_sel"], t["de_sens_opts"])
+        empty_mins = st.slider(
+            t["de_empty_mins"],
+            min_value=0,
+            max_value=25,
+            value=16 if sens_choice == t["de_sens_opts"][1] else 0,
+        )
+    with col_ctrl3:
+        solar_choice = st.selectbox(t["de_solar_sel"], t["de_solar_opts"])
+        inject_fault = st.checkbox(t["de_fault_toggle"], value=False)
 
-  rf_model, iso_model = train_hvac_ai_model()
+    # --- PRIORITY DECISION ENGINE LOGIC ---
+    is_occupied = sens_choice == t["de_sens_opts"][0]
+    is_high_solar = solar_choice == t["de_solar_opts"][0]
+    tt_idx = t["de_tt_opts"].index(tt_choice)
 
-  st.markdown(f"#### {t['ai_sim_title']}")
-  c1, c2, c3 = st.columns([1, 1, 1.2])
-  with c1:
-    peak_temp = st.slider(t["ai_temp_slider"], 28, 50, 43)
-  with c2:
-    avg_occ = st.slider(t["ai_occ_slider"], 10, 100, 75)
-  with c3:
-    st.markdown("<br>", unsafe_allow_html=True)
-    inject_fault = st.checkbox(t["ai_fault_toggle"], value=False)
+    if lang == "English":
+        if is_occupied:
+            if tt_idx == 2:
+                # Class ending soon & nothing follows -> step up to eco slightly early
+                active_mode = "ECO STEP-UP (25°C)"
+                solar_timing = "Coast on Stored Cool"
+                rule_title = "PRIORITY 1 + EARLY STEP-UP: Room Occupied, Class Ending Soon"
+                rule_desc = (
+                    "Sensor confirms students are present, so comfort is maintained, but"
+                    " because the timetable shows no class following this one, the"
+                    " compressor steps up to 25°C Eco-Coast 10 minutes before dismissal."
+                )
+                relay_badge = "🟢 ON (Eco-Coast)"
+            else:
+                active_mode = "ACTIVE COOLING (22°C)"
+                solar_timing = "Standard Comfort Hold"
+                rule_title = "PRIORITY 1 OVERRIDE: Sensor Detects People -> Keep Cooling"
+                rule_desc = (
+                    "ESP32 PIR & CO₂ sensors detect active occupancy. Regardless of what"
+                    " the timetable says (even during unscheduled study sessions), the"
+                    " room stays in 22°C Active Cooling mode."
+                )
+                relay_badge = "🟢 ON (Full Cool)"
+        else:
+            # Sensor sees nobody
+            if tt_idx == 1:
+                # Class starting soon (15-30 mins)
+                active_mode = "PRE-COOLING (21°C)"
+                if is_high_solar:
+                    solar_timing = "Start 30 Mins Early (High Solar)"
+                    rule_title = "PRIORITY 2 + SOLAR BOOST: Early Solar Pre-Cooling Active"
+                    rule_desc = (
+                        "Room is currently empty, but timetable shows a class starting soon."
+                        " Because Solar Canopy output is HIGH, pre-cooling starts 30 minutes"
+                        " early using free midday solar power to bank thermal comfort."
+                    )
+                else:
+                    solar_timing = "Start 15 Mins Early (Low Solar)"
+                    rule_title = "PRIORITY 2 + SOLAR SAVE: Delayed Pre-Cooling Active"
+                    rule_desc = (
+                        "Room is empty and a class starts soon. Because Solar Canopy output is"
+                        " LOW, pre-cooling waits until 15 minutes before class—just enough to"
+                        " reach 22°C on arrival without wasting grid power."
+                    )
+                relay_badge = "🔵 ON (Pre-Cool)"
+            elif tt_idx == 0:
+                # Class on now, but sensor sees nobody
+                if empty_mins < 15:
+                    active_mode = f"GRACE HOLD ({15 - empty_mins}m left)"
+                    solar_timing = "Standby Hold"
+                    rule_title = f"PRIORITY 4 GRACE PERIOD: Waiting for Late Arrivals ({empty_mins}/15 mins)"
+                    rule_desc = (
+                        "Timetable says a class is on now, but sensor sees nobody. Holding"
+                        " temperature during the 15-minute grace period in case students or"
+                        " faculty are running late."
+                    )
+                    relay_badge = "🟠 HOLD (Grace Timer)"
+                else:
+                    active_mode = "ECO / OFF (26°C)"
+                    solar_timing = "Power Diverted to Other Zones"
+                    rule_title = "PRIORITY 4 TRIGGERED: Grace Period Expired -> Class Treated as Cancelled"
+                    rule_desc = (
+                        f"Room remained empty for {empty_mins} mins (>15 min grace period)"
+                        " despite scheduled class. System classifies session as cancelled/moved"
+                        " and switches AC to 26°C Eco / OFF."
+                    )
+                    relay_badge = "🟡 ECO / OFF (Saved)"
+            else:
+                # Class ending soon (empty) or Room free
+                active_mode = "ECO / OFF (26°C)"
+                solar_timing = "Zero Wasted Load"
+                rule_title = "PRIORITY 3: Empty Room + No Upcoming Class -> Eco Mode / OFF"
+                rule_desc = (
+                    "Both the timetable and ESP32 sensor confirm no occupancy is present or"
+                    " expected soon. AC is switched to 26°C Eco / OFF immediately."
+                )
+                relay_badge = "🟡 ECO / OFF (Saved)"
+    else:
+        if is_occupied:
+            if tt_idx == 2:
+                active_mode = "توفير تدريجي (25°م)"
+                solar_timing = "استغلال البرودة المخزنة"
+                rule_title = "الأولوية 1 + إنهاء مبكر: القاعة مشغولة والمحاضرة تنتهي قريباً"
+                rule_desc = (
+                    "المستشعر يؤكد وجود الطلاب، ولأن الجدول يوضح عدم وجود محاضرة تالية،"
+                    " يرفع النظام درجة الحرارة تدريجياً إلى 25°م قبل نهاية المحاضرة بـ 10 دقائق."
+                )
+                relay_badge = "🟢 يعمل (توفير تدريجي)"
+            else:
+                active_mode = "تبريد نشط (22°م)"
+                solar_timing = "تثبيت الراحة الحرارية"
+                rule_title = "الأولوية 1 (تجاوز الجدول): المستشعر يرصد طلاباً -> استمرار التبريد"
+                rule_desc = (
+                    "مستشعرات الحركة وثاني أكسيد الكربون ترصد وجود طلاب داخل القاعة."
+                    " يتم الإبقاء على التبريد النشط (22°م) بغض النظر عن الجدول الدراسي."
+                )
+                relay_badge = "🟢 يعمل (تبريد كامل)"
+        else:
+            if tt_idx == 1:
+                active_mode = "تبريد استباقي (21°م)"
+                if is_high_solar:
+                    solar_timing = "بدء مبكر بـ 30 دقيقة (شمس قوية)"
+                    rule_title = "الأولوية 2 + تعزيز شمسي: تبريد استباقي مبكر عبر الطاقة الشمسية"
+                    rule_desc = (
+                        "القاعة فارغة حالياً ولكن ستبدأ محاضرة قريباً. نظراً لارتفاع إنتاج"
+                        " المظلات الشمسية، يبدأ التبريد قبل 30 دقيقة لتخزين البرودة مجاناً."
+                    )
+                else:
+                    solar_timing = "بدء متأخر بـ 15 دقيقة (شمس منخفضة)"
+                    rule_title = "الأولوية 2 + توفير الشبكة: تأخير التبريد الاستباقي"
+                    rule_desc = (
+                        "القاعة فارغة وستبدأ محاضرة قريباً. نظراً لانخفاض الإنتاج الشمسي،"
+                        " يتأخر التبريد ليبدأ قبل 15 دقيقة فقط لتجنب استهلاك كهرباء الشبكة."
+                    )
+                relay_badge = "🔵 يعمل (تبريد استباقي)"
+            elif tt_idx == 0:
+                if empty_mins < 15:
+                    active_mode = f"فترة سماح ({15 - empty_mins} د متبقية)"
+                    solar_timing = "انتظار مؤقت"
+                    rule_title = f"الأولوية 4 (فترة السماح): انتظار وصول الطلاب ({empty_mins}/15 دقيقة)"
+                    rule_desc = (
+                        "الجدول يوضح وجود محاضرة الآن ولكن القاعة فارغة. يتم الانتظار لمدة"
+                        " 15 دقيقة تحسباً لتأخر الطلاب أو المحاضر قبل فصل التكييف."
+                    )
+                    relay_badge = "🟠 انتظار (مؤقت السماح)"
+                else:
+                    active_mode = "وضع اقتصادي / إيقاف (26°م)"
+                    solar_timing = "توجيه الطاقة لقاعات أخرى"
+                    rule_title = "الأولوية 4 (إلغاء تلقائي): انتهت مهلة الـ 15 دقيقة -> القاعة ملغاة"
+                    rule_desc = (
+                        f"بقيت القاعة فارغة لمدة {empty_mins} دقيقة رغم وجود محاضرة في الجدول."
+                        " يعتبر النظام المحاضرة ملغاة ويحول التكييف فوراً إلى 26°م / إيقاف."
+                    )
+                    relay_badge = "🟡 توفير / إيقاف"
+            else:
+                active_mode = "وضع اقتصادي / إيقاف (26°م)"
+                solar_timing = "صفر هدر للطاقة"
+                rule_title = "الأولوية 3: قاعة فارغة ولا توجد محاضرات -> وضع اقتصادي / إيقاف"
+                rule_desc = (
+                    "الجدول الدراسي والمستشعر يؤكدان عدم وجود طلاب حالياً أو قريباً."
+                    " يتم تحويل التكييف فوراً إلى الوضع الاقتصادي 26°م أو الإيقاف."
+                )
+                relay_badge = "🟡 توفير / إيقاف"
 
-  # EMERGENCY PEAK-LOAD & GRID ALERT SIMULATOR (>45°C)
-  if peak_temp > 45:
-    st.markdown(
-        f'<div class="grid-alert">{t["grid_alert_text"]}</div>',
-        unsafe_allow_html=True,
-    )
-
-  hours_24 = np.arange(0, 24)
-  hourly_temps = peak_temp - 9 * np.cos((hours_24 - 14) * np.pi / 12)
-  hourly_occ = np.where(
-      (hours_24 >= 8) & (hours_24 <= 18), avg_occ, avg_occ * 0.1
-  )
-
-  X_pred = pd.DataFrame(
-      {"hour": hours_24, "temp": hourly_temps, "occ": hourly_occ}
-  )
-  ai_predicted_kw = rf_model.predict(X_pred)
-
-  ai_optimized_kw = ai_predicted_kw * 0.84
-  ai_optimized_kw[6:9] *= 1.12
-  ai_optimized_kw[19:] *= 0.45
-
-  if inject_fault:
-    ai_predicted_kw[11:16] *= 1.42
-
-  peak_sample = pd.DataFrame({
-      "hour": [14],
-      "temp": [hourly_temps[14]],
-      "occ": [hourly_occ[14]],
-      "kw": [ai_predicted_kw[14]],
-  })
-  is_anomaly = (iso_model.predict(peak_sample)[0] == -1) or inject_fault
-
-  k1, k2, k3 = st.columns(3)
-  with k1:
+    # DISPLAY LIVE DECISION ENGINE BANNER
     st.markdown(
         f"""
-        <div class="metric-card">
-            <h4>{t['ai_kpi1_title']}</h4>
-            <h2>{np.max(ai_predicted_kw):.1f} kW</h2>
-            <p>{t['ai_kpi1_sub']}</p>
+        <div class="decision-banner">
+            <h3>⚡ {rule_title}</h3>
+            <p>{rule_desc}</p>
         </div>
-    """,
-        unsafe_allow_html=True,
-    )
-  with k2:
-    saved_pct = (
-        (np.sum(ai_predicted_kw) - np.sum(ai_optimized_kw))
-        / np.sum(ai_predicted_kw)
-    ) * 100
-    st.markdown(
-        f"""
-        <div class="metric-card">
-            <h4>{t['ai_kpi2_title']}</h4>
-            <h2>-{saved_pct:.1f}%</h2>
-            <p>{t['ai_kpi2_sub']}</p>
-        </div>
-    """,
-        unsafe_allow_html=True,
-    )
-  with k3:
-    status_val = t["ai_kpi3_alert"] if is_anomaly else t["ai_kpi3_normal"]
-    status_sub = (
-        t["ai_kpi3_sub_alert"] if is_anomaly else t["ai_kpi3_sub_normal"]
-    )
-    st.markdown(
-        f"""
-        <div class="metric-card">
-            <h4>{t['ai_kpi3_title']}</h4>
-            <h2>{status_val}</h2>
-            <p>{status_sub}</p>
-        </div>
-    """,
+        """,
         unsafe_allow_html=True,
     )
 
-  df_ai_plot = pd.DataFrame({
-      "Hour": hours_24,
-      "Unoptimized AI Baseline Forecast (kW)": ai_predicted_kw,
-      "AI Pre-Cooled & Occupancy-Optimized (kW)": ai_optimized_kw,
-  })
-  fig_ai = px.area(
-      df_ai_plot,
-      x="Hour",
-      y=[
-          "Unoptimized AI Baseline Forecast (kW)",
-          "AI Pre-Cooled & Occupancy-Optimized (kW)",
-      ],
-      color_discrete_sequence=["#B45309", "#1E5631"],
-      title=t["ai_chart_title"],
-  )
-  fig_ai.update_layout(
-      plot_bgcolor="#FFFFFF",
-      paper_bgcolor="#F7F9F6",
-      font=dict(color="#000000", size=13),
-      title=dict(font=dict(color="#000000", size=16)),
-      xaxis=dict(
-          title=dict(font=dict(color="#000000")),
-          tickfont=dict(color="#000000"),
-          gridcolor="#D0D8D0",
-          linecolor="#000000",
-      ),
-      yaxis=dict(
-          title=dict(font=dict(color="#000000")),
-          tickfont=dict(color="#000000"),
-          gridcolor="#D0D8D0",
-          linecolor="#000000",
-      ),
-      legend=dict(
-          orientation="h",
-          yanchor="bottom",
-          y=1.02,
-          xanchor="right",
-          x=1,
-          font=dict(color="#000000"),
-      ),
-  )
-  st.plotly_chart(fig_ai, use_container_width=True)
+    if peak_temp > 45:
+        st.markdown(
+            f'<div class="grid-alert">{t["grid_alert_text"]}</div>',
+            unsafe_allow_html=True,
+        )
 
-  st.markdown(f"#### {t['ai_action_header']}")
-  if lang == "English":
-    ai_actions_df = pd.DataFrame({
-        t["ai_col_zone"]: [
-            "Engineering Block A",
-            "Library Atrium",
-            "Science Labs",
-            "Student Hub",
-        ],
-        t["ai_col_pred"]: [
-            f"{ai_optimized_kw[14]:.1f} kW",
-            f"{ai_optimized_kw[12]:.1f} kW",
-            "0.0 kW",
-            f"{ai_optimized_kw[15]:.1f} kW",
-        ],
-        t["ai_col_action"]: [
-            (
-                "ALERT: Isolate faulty compressor & notify maintenance"
-                if is_anomaly
-                else "Pre-cool to 21°C at 7:30 AM using solar peak"
-            ),
-            "Maintain 23°C eco-setpoint; modulate fresh air damper",
-            "Zero occupancy predicted until 2:00 PM -> Full AC Cutoff",
-            "Sync cooling ramp-up with 12:00 PM break schedule",
-        ],
-        t["ai_col_status"]: [
-            "🔴 Fault Isolated" if is_anomaly else "🟢 Pre-Cooling Active",
-            "🟢 Eco-Modulating",
-            "🟡 Relay OFF (Saved)",
-            "🟢 AI Scheduled",
-        ],
+    # 4 KPI CARDS FOR DECISION OUTPUT
+    dk1, dk2, dk3, dk4 = st.columns(4)
+    with dk1:
+        st.markdown(
+            f"""
+            <div class="metric-card">
+                <h4>{t['de_kpi1_t']}</h4>
+                <h2>{tt_choice.split('(')[0].strip()}</h2>
+                <p>Timetable File Input</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    with dk2:
+        sens_sub = (
+            f"Empty for {empty_mins} mins"
+            if not is_occupied
+            else "PIR + CO₂ Active"
+        )
+        st.markdown(
+            f"""
+            <div class="metric-card">
+                <h4>{t['de_kpi2_t']}</h4>
+                <h2>{sens_choice.split('(')[0].strip()}</h2>
+                <p>{sens_sub}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    with dk3:
+        st.markdown(
+            f"""
+            <div class="metric-card">
+                <h4>{t['de_kpi3_t']}</h4>
+                <h2>{active_mode}</h2>
+                <p>{relay_badge}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    with dk4:
+        st.markdown(
+            f"""
+            <div class="metric-card">
+                <h4>{t['de_kpi4_t']}</h4>
+                <h2>{solar_timing}</h2>
+                <p>{solar_choice.split('(')[0].strip()}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # LIVE TIMETABLE + SENSOR FUSION TABLE ACROSS CAMPUS ROOMS
+    st.markdown(f"#### {t['de_tt_table_h']}")
+    if lang == "English":
+        fusion_df = pd.DataFrame({
+            "Room ID": ["ENG-101 (Selected)", "ENG-104", "LAB-202", "BUS-305", "AUD-01"],
+            "Timetable File Schedule": [
+                tt_choice,
+                "11:00 - 12:30 (In Progress)",
+                "11:30 - 13:00 (Starts in 20m)",
+                "10:00 - 11:00 (Ending Soon)",
+                "Free Until 15:00",
+            ],
+            "ESP32 Sensor Reading": [
+                f"{sens_choice.split('(')[0].strip()} ({empty_mins}m empty)" if not is_occupied else "Occupied (38 students)",
+                "Empty for 18 mins",
+                "Empty (0 students)",
+                "Occupied (29 students)",
+                "Occupied (15 club members)",
+            ],
+            "Solar Canopy Sync": [
+                solar_choice.split("(")[0].strip(),
+                "High Solar (375 kWp)",
+                "High Solar -> Early Pre-Cool",
+                "Midday Solar Coast",
+                "High Solar -> Offset Load",
+            ],
+            "Final Decision Rule Action": [
+                f"{active_mode} ({relay_badge})",
+                "Grace Expired (>15m) -> Class Cancelled -> 26°C Eco",
+                "Pre-Cool 30m Early using Midday Solar Peak",
+                "Step up to 25°C Eco 10m before class ends",
+                "Sensor Override -> Keep 22°C Cooling Active",
+            ],
+        })
+    else:
+        fusion_df = pd.DataFrame({
+            "رمز القاعة": ["ENG-101 (المحددة)", "ENG-104", "LAB-202", "BUS-305", "AUD-01"],
+            "جدول القاعات الدراسي": [
+                tt_choice,
+                "11:00 - 12:30 (جارية حالياً)",
+                "11:30 - 13:00 (تبدأ خلال 20 د)",
+                "10:00 - 11:00 (تنتهي قريباً)",
+                "فارغة حتى الساعة 15:00",
+            ],
+            "قراءة مستشعر ESP32": [
+                f"{sens_choice.split('(')[0].strip()} ({empty_mins} د)" if not is_occupied else "مشغولة (38 طالباً)",
+                "فارغة منذ 18 دقيقة",
+                "فارغة (0 طلاب)",
+                "مشغولة (29 طالباً)",
+                "مشغولة (15 طالباً لنشاط طلابي)",
+            ],
+            "مزامنة المظلات الشمسية": [
+                solar_choice.split("(")[0].strip(),
+                "إنتاج شمسي مرتفع",
+                "شمس مرتفعة -> تبريد مبكر",
+                "استغلال برودة الظهيرة",
+                "تغطية الحمل بالطاقة الشمسية",
+            ],
+            "القرار النهائي للمحرك": [
+                f"{active_mode} ({relay_badge})",
+                "انتهت مهلة 15 د -> محاضرة ملغاة -> توفير 26°م",
+                "تبريد استباقي قبل 30 د عبر ذروة الشمس",
+                "رفع الحرارة إلى 25°م قبل نهاية المحاضرة بـ 10 د",
+                "تجاوز الجدول لوجود طلاب -> تبريد نشط 22°م",
+            ],
+        })
+
+    st.dataframe(fusion_df, use_container_width=True)
+
+    # 24-HOUR CURVE SHOWING TIMETABLE + SOLAR PRE-COOLING SHIFT
+    @st.cache_resource
+    def train_load_model():
+        np.random.seed(42)
+        n_samples = 500
+        hours_data = np.random.randint(0, 24, n_samples)
+        temp_data = np.random.uniform(26, 48, n_samples)
+        occ_data = np.random.uniform(0, 100, n_samples)
+        cooling_kw = (
+            0.35 * np.maximum(0, temp_data - 22)
+            + 0.08 * occ_data
+            + 4.5 * np.sin(np.pi * np.clip((hours_data - 6) / 14, 0, 1))
+            + np.random.normal(0, 0.4, n_samples)
+        )
+        X_train = pd.DataFrame({"hour": hours_data, "temp": temp_data, "occ": occ_data})
+        rf_model = RandomForestRegressor(n_estimators=60, random_state=42)
+        rf_model.fit(X_train, cooling_kw)
+        return rf_model
+
+    rf_model = train_load_model()
+    hours_24 = np.arange(0, 24)
+    hourly_temps = peak_temp - 9 * np.cos((hours_24 - 14) * np.pi / 12)
+    hourly_occ = np.where((hours_24 >= 8) & (hours_24 <= 18), 75, 8)
+
+    X_pred = pd.DataFrame({"hour": hours_24, "temp": hourly_temps, "occ": hourly_occ})
+    unoptimized_kw = rf_model.predict(X_pred)
+
+    # Smart Rule Optimized Curve: shifts cooling into high solar midday (10am-1pm) and cuts empty rooms
+    smart_rule_kw = unoptimized_kw * 0.78
+    smart_rule_kw[10:13] *= 1.18  # Midday solar pre-cooling boost
+    smart_rule_kw[14:17] *= 0.74  # Reduced afternoon peak draw due to pre-cooled thermal mass
+    smart_rule_kw[19:] *= 0.40    # Empty evening eco cutoff
+
+    if inject_fault:
+        unoptimized_kw[11:16] *= 1.42
+
+    df_plot = pd.DataFrame({
+        "Hour": hours_24,
+        "Static Timer HVAC (kW)": unoptimized_kw,
+        "Timetable + Sensor + Solar Rule HVAC (kW)": smart_rule_kw,
     })
-  else:
-    ai_actions_df = pd.DataFrame({
-        t["ai_col_zone"]: [
-            "مبنى الهندسة (أ)",
-            "بهو المكتبة الرئيسية",
-            "مختبرات العلوم",
-            "مركز الأنشطة الطلابية",
-        ],
-        t["ai_col_pred"]: [
-            f"{ai_optimized_kw[14]:.1f} kW",
-            f"{ai_optimized_kw[12]:.1f} kW",
-            "0.0 kW",
-            f"{ai_optimized_kw[15]:.1f} kW",
-        ],
-        t["ai_col_action"]: [
-            (
-                "تنبيه: عزل الضاغط المعطل وإرسال إشعار للصيانة فوراً"
-                if is_anomaly
-                else "تبريد استباقي إلى 21°م الساعة 7:30 صباحاً عبر الطاقة"
-                " الشمسية"
-            ),
-            "تثبيت الحرارة عند 23°م وضبط التهوية حسب نسبة ثاني أكسيد الكربون",
-            "لا توجد محاضرات متوقعة حتى 2:00 ظهراً -> إيقاف التكييف بالكامل",
-            "مزامنة التبريد تلقائياً مع جدول استراحة الطلاب الساعة 12:00 ظهراً",
-        ],
-        t["ai_col_status"]: [
-            "🔴 تم عزل العطل" if is_anomaly else "🟢 تبريد استباقي نشط",
-            "🟢 وضع التوفير الذكي",
-            "🟡 مغلق تلقائياً (توفير)",
-            "🟢 مجدول بالذكاء الاصطناعي",
-        ],
-    })
 
-  st.dataframe(ai_actions_df, use_container_width=True)
+    fig_de = px.area(
+        df_plot,
+        x="Hour",
+        y=[
+            "Static Timer HVAC (kW)",
+            "Timetable + Sensor + Solar Rule HVAC (kW)",
+        ],
+        color_discrete_sequence=["#B45309", "#1E5631"],
+        title=t["de_chart_title"],
+    )
+    fig_de.update_layout(
+        plot_bgcolor="#FFFFFF",
+        paper_bgcolor="#F7F9F6",
+        font=dict(color="#000000", size=13),
+        title=dict(font=dict(color="#000000", size=16)),
+        xaxis=dict(
+            title=dict(font=dict(color="#000000")),
+            tickfont=dict(color="#000000"),
+            gridcolor="#D0D8D0",
+            linecolor="#000000",
+        ),
+        yaxis=dict(
+            title=dict(font=dict(color="#000000")),
+            tickfont=dict(color="#000000"),
+            gridcolor="#D0D8D0",
+            linecolor="#000000",
+        ),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            font=dict(color="#000000"),
+        ),
+    )
+    st.plotly_chart(fig_de, use_container_width=True)
 
 # ==========================================
-# TAB 2: ENERGY3D THERMAL & SOLAR LAB
+# TAB 3: ENERGY3D THERMAL & SOLAR LAB
 # ==========================================
 with tab2:
-  st.subheader(t["t2_sub"])
+    st.subheader(t["t2_sub"])
 
-  hours = np.arange(0, 24)
-  baseline_cooling = np.array([
-      0.5, 0.6, 0.8, 1.2, 1.8, 2.8, 11.0, 16.0, 18.0, 18.8, 18.5, 17.2,
-      16.8, 18.3, 18.9, 18.3, 16.8, 13.0, 4.5, 2.0, 1.5, 1.1, 0.8, 0.6,
-  ])
-  optimized_cooling = baseline_cooling * 0.72
-  solar_generation = (
-      np.array([
-          0, 0, 0, 0, 0, 0.5, 3.5, 7.5, 11.0, 13.0, 12.0, 10.5,
-          10.5, 12.0, 13.0, 12.5, 9.5, 4.0, 0.8, 0, 0, 0, 0, 0,
-      ])
-      * 3.75
-  )
+    hours = np.arange(0, 24)
+    baseline_cooling = np.array([
+        0.5, 0.6, 0.8, 1.2, 1.8, 2.8, 11.0, 16.0, 18.0, 18.8, 18.5, 17.2,
+        16.8, 18.3, 18.9, 18.3, 16.8, 13.0, 4.5, 2.0, 1.5, 1.1, 0.8, 0.6,
+    ])
+    optimized_cooling = baseline_cooling * 0.72
+    solar_generation = (
+        np.array([
+            0, 0, 0, 0, 0, 0.5, 3.5, 7.5, 11.0, 13.0, 12.0, 10.5,
+            10.5, 12.0, 13.0, 12.5, 9.5, 4.0, 0.8, 0, 0, 0, 0, 0,
+        ])
+        * 3.75
+    )
 
-  df_energy = pd.DataFrame({
-      "Hour": hours,
-      "Baseline AC Load (kW) (5×3 m Windows)": baseline_cooling,
-      "Optimized AC Load (kW) (3×1 m + Louvers)": optimized_cooling,
-      "Solar Canopy Generation (kW)": solar_generation,
-  })
+    df_energy = pd.DataFrame({
+        "Hour": hours,
+        "Baseline AC Load (kW) (5×3 m Windows)": baseline_cooling,
+        "Optimized AC Load (kW) (3×1 m + Louvers)": optimized_cooling,
+        "Solar Canopy Generation (kW)": solar_generation,
+    })
 
-  fig = px.line(
-      df_energy,
-      x="Hour",
-      y=[
-          "Baseline AC Load (kW) (5×3 m Windows)",
-          "Optimized AC Load (kW) (3×1 m + Louvers)",
-          "Solar Canopy Generation (kW)",
-      ],
-      markers=True,
-      color_discrete_sequence=["#B45309", "#143625", "#2E8B57"],
-      labels={
-          "value": "Power (kW or kWh/h)",
-          "Hour": "Hour of Day (Abu Dhabi Solar Curve)",
-      },
-      title=t["t2_chart"],
-  )
-  fig.update_layout(
-      plot_bgcolor="#FFFFFF",
-      paper_bgcolor="#F7F9F6",
-      font=dict(color="#000000", size=13),
-      title=dict(font=dict(color="#000000", size=16)),
-      xaxis=dict(
-          title=dict(font=dict(color="#000000")),
-          tickfont=dict(color="#000000"),
-          gridcolor="#D0D8D0",
-          linecolor="#000000",
-      ),
-      yaxis=dict(
-          title=dict(font=dict(color="#000000")),
-          tickfont=dict(color="#000000"),
-          gridcolor="#D0D8D0",
-          linecolor="#000000",
-      ),
-      legend=dict(
-          orientation="h",
-          yanchor="bottom",
-          y=1.02,
-          xanchor="right",
-          x=1,
-          font=dict(color="#000000"),
-      ),
-  )
-  st.plotly_chart(fig, use_container_width=True)
+    fig = px.line(
+        df_energy,
+        x="Hour",
+        y=[
+            "Baseline AC Load (kW) (5×3 m Windows)",
+            "Optimized AC Load (kW) (3×1 m + Louvers)",
+            "Solar Canopy Generation (kW)",
+        ],
+        markers=True,
+        color_discrete_sequence=["#B45309", "#143625", "#2E8B57"],
+        labels={
+            "value": "Power (kW or kWh/h)",
+            "Hour": "Hour of Day (Abu Dhabi Solar Curve)",
+        },
+        title=t["t2_chart"],
+    )
+    fig.update_layout(
+        plot_bgcolor="#FFFFFF",
+        paper_bgcolor="#F7F9F6",
+        font=dict(color="#000000", size=13),
+        title=dict(font=dict(color="#000000", size=16)),
+        xaxis=dict(
+            title=dict(font=dict(color="#000000")),
+            tickfont=dict(color="#000000"),
+            gridcolor="#D0D8D0",
+            linecolor="#000000",
+        ),
+        yaxis=dict(
+            title=dict(font=dict(color="#000000")),
+            tickfont=dict(color="#000000"),
+            gridcolor="#D0D8D0",
+            linecolor="#000000",
+        ),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            font=dict(color="#000000"),
+        ),
+    )
+    st.plotly_chart(fig, use_container_width=True)
 
-  col1, col2 = st.columns(2)
-  with col1:
-    st.markdown(
-        f"""
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown(
+            f"""
             <div class="info-box">
                 <h4>{t['t2_b1_h']}</h4>
                 <ul>{t['t2_b1_li']}</ul>
             </div>
         """,
-        unsafe_allow_html=True,
-    )
-  with col2:
-    st.markdown(
-        f"""
+            unsafe_allow_html=True,
+        )
+    with col2:
+        st.markdown(
+            f"""
             <div class="info-box">
                 <h4>{t['t2_b2_h']}</h4>
                 <ul>{t['t2_b2_li']}</ul>
             </div>
         """,
-        unsafe_allow_html=True,
-    )
+            unsafe_allow_html=True,
+        )
 
 # ==========================================
-# TAB 3: STUDENT ECO-REWARDS & QR HUB
+# TAB 4: STUDENT ECO-REWARDS & QR HUB
 # ==========================================
 with tab3:
-  st.subheader(t["t3_sub"])
+    st.subheader(t["t3_sub"])
 
-  col1, col2 = st.columns(2)
-  with col1:
-    st.markdown(t["t3_c1_h"])
-    student_id = st.text_input(t["t3_id"], value="LU-2026-9921")
-    student_name = st.text_input(t["t3_name"], value="Fathima Faseeha Faizoor")
-    bin_location = st.selectbox(
-        t["t3_bin"],
-        [
-            "Engineering Building - Smart Bin #1 (PET Plastics)",
-            "Library Atrium - Smart Bin #2 (Aluminum Cans)",
-            "Student Hub - Smart Bin #3 (Office Paper)",
-        ],
-    )
-    waste_type = st.selectbox(
-        t["t3_waste"],
-        [
-            "PET Bottle (0.5 kg) - 25 Credits",
-            "Aluminum Can (0.3 kg) - 35 Credits",
-            "Mixed Paper (1.2 kg) - 50 Credits",
-        ],
-    )
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown(t["t3_c1_h"])
+        student_id = st.text_input(t["t3_id"], value="LU-2026-9921")
+        student_name = st.text_input(t["t3_name"], value="Fathima Faseeha Faizoor")
+        bin_location = st.selectbox(
+            t["t3_bin"],
+            [
+                "Engineering Building - Smart Bin #1 (PET Plastics)",
+                "Library Atrium - Smart Bin #2 (Aluminum Cans)",
+                "Student Hub - Smart Bin #3 (Office Paper)",
+            ],
+        )
+        waste_type = st.selectbox(
+            t["t3_waste"],
+            [
+                "PET Bottle (0.5 kg) - 25 Credits",
+                "Aluminum Can (0.3 kg) - 35 Credits",
+                "Mixed Paper (1.2 kg) - 50 Credits",
+            ],
+        )
 
-    if st.button(t["t3_btn"]):
-      qr_payload = f"LiwaEcoSmart:ID={student_id}|Name={student_name}|Bin={bin_location}|Type={waste_type}"
-      qr = qrcode.QRCode(version=1, box_size=8, border=2)
-      qr.add_data(qr_payload)
-      qr.make(fit=True)
-      img = qr.make_image(fill_color="#143625", back_color="#F7F9F6")
-      buf = io.BytesIO()
-      img.save(buf, format="PNG")
-      byte_im = buf.getvalue()
+        if st.button(t["t3_btn"]):
+            qr_payload = f"LiwaEcoSmart:ID={student_id}|Name={student_name}|Bin={bin_location}|Type={waste_type}"
+            qr = qrcode.QRCode(version=1, box_size=8, border=2)
+            qr.add_data(qr_payload)
+            qr.make(fit=True)
+            img = qr.make_image(fill_color="#143625", back_color="#F7F9F6")
+            buf = io.BytesIO()
+            img.save(buf, format="PNG")
+            byte_im = buf.getvalue()
 
-      st.image(byte_im, width=220, caption=t["t3_cap"])
-      st.success(t["t3_ok"])
+            st.image(byte_im, width=220, caption=t["t3_cap"])
+            st.success(t["t3_ok"])
 
-  with col2:
-    st.markdown(t["t3_c2_h"])
-    if lang == "English":
-      bins_status_df = pd.DataFrame({
-          "Bin ID & Location": [
-              "BIN-ENG-01 (Ground Lobby)",
-              "BIN-LIB-02 (Reading Hall)",
-              "BIN-CAF-03 (Food Court)",
-              "BIN-SCI-04 (Chemistry Dept)",
-          ],
-          "Material Type": [
-              "Plastics (PET)",
-              "Aluminum Cans",
-              "Organic / Mixed",
-              "Paper & Cardboard",
-          ],
-          "Ultrasonic Fill Level": ["78%", "92% (Warning)", "45%", "62%"],
-          "Status": ["Normal", "Collection Required", "Normal", "Normal"],
-          "Total Diverted (kg/wk)": ["340 kg", "210 kg", "450 kg", "180 kg"],
-      })
-    else:
-      bins_status_df = pd.DataFrame({
-          "رمز وموقع الحاوية": [
-              "BIN-ENG-01 (بهو الهندسة)",
-              "BIN-LIB-02 (قاعة المكتبة)",
-              "BIN-CAF-03 (ساحة الطعام)",
-              "BIN-SCI-04 (قسم الكيمياء)",
-          ],
-          "نوع المادة": [
-              "بلاستيك (PET)",
-              "علب ألمنيوم",
-              "نفايات عضوية / مختلطة",
-              "ورق وكرتون",
-          ],
-          "نسبة الامتلاء (فوق صوتي)": ["78%", "92% (تنبيه)", "45%", "62%"],
-          "الحالة": ["طبيعي", "مطلوب تفريغ", "طبيعي", "طبيعي"],
-          "إجمالي التدوير (كجم/أسبوع)": ["340 كجم", "210 كجم", "450 كجم", "180 كجم"],
-      })
-    st.dataframe(bins_status_df, use_container_width=True)
+    with col2:
+        st.markdown(t["t3_c2_h"])
+        if lang == "English":
+            bins_status_df = pd.DataFrame({
+                "Bin ID & Location": [
+                    "BIN-ENG-01 (Ground Lobby)",
+                    "BIN-LIB-02 (Reading Hall)",
+                    "BIN-CAF-03 (Food Court)",
+                    "BIN-SCI-04 (Chemistry Dept)",
+                ],
+                "Material Type": [
+                    "Plastics (PET)",
+                    "Aluminum Cans",
+                    "Organic / Mixed",
+                    "Paper & Cardboard",
+                ],
+                "Ultrasonic Fill Level": ["78%", "92% (Warning)", "45%", "62%"],
+                "Status": ["Normal", "Collection Required", "Normal", "Normal"],
+                "Total Diverted (kg/wk)": ["340 kg", "210 kg", "450 kg", "180 kg"],
+            })
+        else:
+            bins_status_df = pd.DataFrame({
+                "رمز وموقع الحاوية": [
+                    "BIN-ENG-01 (بهو الهندسة)",
+                    "BIN-LIB-02 (قاعة المكتبة)",
+                    "BIN-CAF-03 (ساحة الطعام)",
+                    "BIN-SCI-04 (قسم الكيمياء)",
+                ],
+                "نوع المادة": [
+                    "بلاستيك (PET)",
+                    "علب ألمنيوم",
+                    "نفايات عضوية / مختلطة",
+                    "ورق وكرتون",
+                ],
+                "نسبة الامتلاء (فوق صوتي)": ["78%", "92% (تنبيه)", "45%", "62%"],
+                "الحالة": ["طبيعي", "مطلوب تفريغ", "طبيعي", "طبيعي"],
+                "إجمالي التدوير (كجم/أسبوع)": ["340 كجم", "210 كجم", "450 كجم", "180 كجم"],
+            })
+        st.dataframe(bins_status_df, use_container_width=True)
 
-    st.markdown(t["t3_cat_h"])
-    st.markdown(
-        f"""
+        st.markdown(t["t3_cat_h"])
+        st.markdown(
+            f"""
             <div class="info-box">
                 <ul>{t['t3_cat_li']}</ul>
             </div>
         """,
-        unsafe_allow_html=True,
-    )
+            unsafe_allow_html=True,
+        )
 
 # ==========================================
-# TAB 4: FINANCIAL ROI & SCENARIO ENGINE
+# TAB 5: FINANCIAL ROI & SCENARIO ENGINE
 # ==========================================
 with tab4:
-  st.subheader(t["t4_sub"])
-  st.markdown(t["t4_desc"])
+    st.subheader(t["t4_sub"])
+    st.markdown(t["t4_desc"])
 
-  col_s1, col_s2 = st.columns(2)
-  with col_s1:
-    capex_input = st.slider(
-        t["t4_s1"],
-        min_value=100000,
-        max_value=500000,
-        value=220000,
-        step=10000,
-    )
-  with col_s2:
-    tariff_input = st.slider(
-        t["t4_s2"],
-        min_value=0.30,
-        max_value=0.70,
-        value=0.45,
-        step=0.05,
-    )
+    col_s1, col_s2 = st.columns(2)
+    with col_s1:
+        capex_input = st.slider(
+            t["t4_s1"],
+            min_value=100000,
+            max_value=500000,
+            value=220000,
+            step=10000,
+        )
+    with col_s2:
+        tariff_input = st.slider(
+            t["t4_s2"],
+            min_value=0.30,
+            max_value=0.70,
+            value=0.45,
+            step=0.05,
+        )
 
-  annual_kwh = 568500
-  annual_savings_aed = annual_kwh * tariff_input
-  payback_period = capex_input / annual_savings_aed
-  net_10yr_savings = (annual_savings_aed * 10) - capex_input
+    annual_kwh = 568500
+    annual_savings_aed = annual_kwh * tariff_input
+    payback_period = capex_input / annual_savings_aed
+    net_10yr_savings = (annual_savings_aed * 10) - capex_input
 
-  col_m1, col_m2, col_m3 = st.columns(3)
-  with col_m1:
-    st.markdown(
-        f"""
+    col_m1, col_m2, col_m3 = st.columns(3)
+    with col_m1:
+        st.markdown(
+            f"""
             <div class="metric-card">
                 <h4>{t['t4_k1_t']}</h4>
                 <h2>AED {annual_savings_aed:,.0f}</h2>
                 <p>{t['t4_k1_s']}</p>
             </div>
         """,
-        unsafe_allow_html=True,
-    )
-  with col_m2:
-    st.markdown(
-        f"""
+            unsafe_allow_html=True,
+        )
+    with col_m2:
+        st.markdown(
+            f"""
             <div class="metric-card">
                 <h4>{t['t4_k2_t']}</h4>
                 <h2>{payback_period:.2f} {t['t4_k2_v']}</h2>
                 <p>{t['t4_k2_s']}</p>
             </div>
         """,
-        unsafe_allow_html=True,
-    )
-  with col_m3:
-    st.markdown(
-        f"""
+            unsafe_allow_html=True,
+        )
+    with col_m3:
+        st.markdown(
+            f"""
             <div class="metric-card">
                 <h4>{t['t4_k3_t']}</h4>
                 <h2>AED {net_10yr_savings:,.0f}</h2>
                 <p>{t['t4_k3_s']}</p>
             </div>
         """,
-        unsafe_allow_html=True,
+            unsafe_allow_html=True,
+        )
+
+    st.markdown("---")
+    st.markdown(f"### {t['impact_badge_title']}")
+    student_slider = st.slider(
+        t["impact_slider"], min_value=1000, max_value=10000, value=3500, step=500
     )
 
-  st.markdown("---")
-  st.markdown(f"### {t['impact_badge_title']}")
-  student_slider = st.slider(
-      t["impact_slider"], min_value=1000, max_value=10000, value=3500, step=500
-  )
+    scale_factor = student_slider / 3500
+    trees_planted = int(12500 * scale_factor)
+    olympic_pools = 3.5 * scale_factor
 
-  scale_factor = student_slider / 3500
-  trees_planted = int(12500 * scale_factor)
-  olympic_pools = 3.5 * scale_factor
-
-  col_b1, col_b2, col_b3 = st.columns(3)
-  with col_b1:
-    st.markdown(
-        f"""
+    col_b1, col_b2, col_b3 = st.columns(3)
+    with col_b1:
+        st.markdown(
+            f"""
             <div class="metric-card">
                 <h4>🌲 Abu Dhabi Mangrove Offset</h4>
                 <h2>{trees_planted:,} Trees</h2>
                 <p>Equivalent CO₂ absorption per year</p>
             </div>
         """,
-        unsafe_allow_html=True,
-    )
-  with col_b2:
-    st.markdown(
-        f"""
+            unsafe_allow_html=True,
+        )
+    with col_b2:
+        st.markdown(
+            f"""
             <div class="metric-card">
                 <h4>🏊 Water Conservation</h4>
                 <h2>{olympic_pools:.1f} Pools</h2>
                 <p>Olympic pools of water saved annually</p>
             </div>
         """,
-        unsafe_allow_html=True,
-    )
-  with col_b3:
-    st.markdown(
-        f"""
+            unsafe_allow_html=True,
+        )
+    with col_b3:
+        st.markdown(
+            f"""
             <div class="metric-card">
                 <h4>🎓 Campus Community Impact</h4>
                 <h2>{student_slider:,} Students</h2>
                 <p>Actively engaged in net-zero rewards</p>
             </div>
         """,
-        unsafe_allow_html=True,
-    )
+            unsafe_allow_html=True,
+        )
 
-  st.markdown(t["road_h"])
-  if lang == "English":
-    roadmap_df = pd.DataFrame({
-        "Rollout Phase": [
-            "Phase 1: Quick-Win Pilot",
-            "Phase 2: Student Engagement",
-            "Phase 3: Campus-Wide Scale",
-        ],
-        "Strategic Focus": [
-            "Wireless IoT Sensor Retrofit",
-            "Bilingual UI & Smart Bins",
-            "Solar Canopies & AI HVAC",
-        ],
-        "Key Actions": [
-            (
-                "Deploy wireless ESP32 occupancy/IAQ nodes & soil moisture"
-                " sensors in 1 building; replace estimates with live"
-                " telemetry."
-            ),
-            (
-                "Launch bilingual Arabic/English dashboard & QR-linked smart"
-                " bins with campus cafeteria eco-rewards."
-            ),
-            (
-                "Reinvest operational utility savings into 375 kWp parking"
-                " solar canopies & AI predictive HVAC scheduling."
-            ),
-        ],
-        "Timeline": ["Months 1 - 3", "Months 4 - 6", "Months 7 - 12+"],
-    })
-  else:
-    roadmap_df = pd.DataFrame({
-        "مرحلة التنفيذ": [
-            "المرحلة 1: التشغيل التجريبي السريع",
-            "المرحلة 2: تفاعل الطلاب والاستدامة",
-            "المرحلة 3: التوسع الشامل في الحرم",
-        ],
-        "التركيز الاستراتيجي": [
-            "تحديث المستشعرات اللاسلكية (IoT)",
-            "الواجهة ثنائية اللغة والحاويات الذكية",
-            "المظلات الشمسية والتكييف بالذكاء الاصطناعي",
-        ],
-        "الإجراءات الرئيسية": [
-            "نشر عقد ESP32 اللاسلكية ومستشعرات رطوبة التربة في مبنى واحد واستبدال التقديرات ببيانات حية.",
-            "إطلاق لوحة التحكم بالعربية والإنجليزية وربط الحاويات الذكية بمكافآت الكافتيريا.",
-            "إعادة استثمار الوفورات المالية في تركيب مظلات شمسية 375 كيلوواط وجدولة التكييف الذكية.",
-        ],
-        "الجدول الزمني": ["الأشهر 1 - 3", "الأشهر 4 - 6", "الأشهر 7 - 12+"],
-    })
-  st.table(roadmap_df)
+    st.markdown(t["road_h"])
+    if lang == "English":
+        roadmap_df = pd.DataFrame({
+            "Rollout Phase": [
+                "Phase 1: Quick-Win Pilot",
+                "Phase 2: Student Engagement",
+                "Phase 3: Campus-Wide Scale",
+            ],
+            "Strategic Focus": [
+                "Wireless IoT Sensor + Timetable Pilot",
+                "Bilingual UI & Smart Bins",
+                "Solar Canopies & Full Campus Pre-Cooling",
+            ],
+            "Key Actions": [
+                (
+                    "Deploy wireless ESP32 occupancy/IAQ nodes linked to room"
+                    " timetables & soil moisture sensors in 1 building."
+                ),
+                (
+                    "Launch bilingual Arabic/English dashboard & QR-linked smart"
+                    " bins with campus cafeteria eco-rewards."
+                ),
+                (
+                    "Reinvest operational utility savings into 375 kWp parking"
+                    " solar canopies synced with midday pre-cooling."
+                ),
+            ],
+            "Timeline": ["Months 1 - 3", "Months 4 - 6", "Months 7 - 12+"],
+        })
+    else:
+        roadmap_df = pd.DataFrame({
+            "مرحلة التنفيذ": [
+                "المرحلة 1: التشغيل التجريبي السريع",
+                "المرحلة 2: تفاعل الطلاب والاستدامة",
+                "المرحلة 3: التوسع الشامل في الحرم",
+            ],
+            "التركيز الاستراتيجي": [
+                "ربط المستشعرات اللاسلكية بالجدول الدراسي",
+                "الواجهة ثنائية اللغة والحاويات الذكية",
+                "المظلات الشمسية والتبريد الاستباقي الشامل",
+            ],
+            "الإجراءات الرئيسية": [
+                "نشر عقد ESP32 اللاسلكية وربطها بملف الجداول الدراسية ومستشعرات رطوبة التربة في مبنى واحد.",
+                "إطلاق لوحة التحكم بالعربية والإنجليزية وربط الحاويات الذكية بمكافآت الكافتيريا.",
+                "إعادة استثمار الوفورات المالية في تركيب مظلات شمسية 375 كيلوواط ومزامنتها مع التبريد الاستباقي.",
+            ],
+            "الجدول الزمني": ["الأشهر 1 - 3", "الأشهر 4 - 6", "الأشهر 7 - 12+"],
+        })
+    st.table(roadmap_df)
 
 # ==========================================
-# TAB 5: ESP32 HARDWARE & RETROFIT BOM
+# TAB 6: ESP32 HARDWARE & RETROFIT BOM
 # ==========================================
 with tab5:
-  st.subheader(t["t5_sub"])
-  st.markdown(t["t5_desc"])
+    st.subheader(t["t5_sub"])
+    st.markdown(t["t5_desc"])
 
-  if lang == "English":
-    bom_df = pd.DataFrame({
-        "Module Component": [
-            "Occupancy Detection",
-            "HVAC Current Sensing",
-            "Indoor Air Quality (IAQ)",
-            "AC Relay Control",
-            "Smart Bin Fill Level",
-            "Smart Irrigation",
-        ],
-        "Hardware Sensor / Actuator": [
-            "PIR Motion Sensor (HC-SR501)",
-            "SCT-013-030 Non-Invasive Current Clamp",
-            "NDIR CO₂ & Temperature Sensor (MH-Z19)",
-            "5V 2-Channel Optical Isolation Relay Module",
-            "Ultrasonic Distance Sensor (HC-SR04)",
-            "Capacitive Soil Moisture Sensor v1.2",
-        ],
-        "ESP32 GPIO Pin": [
-            "GPIO 14 (Digital IN)",
-            "GPIO 35 (ADC Analog IN)",
-            "GPIO 34 (ADC Analog IN)",
-            "GPIO 26 (Digital OUT)",
-            "GPIO 12 (Trig) / GPIO 13 (Echo)",
-            "GPIO 32 (ADC Analog IN)",
-        ],
-        "Function & Retrofit Role": [
-            "Detects classroom presence to prevent empty-room AC waste.",
-            "Monitors real-time AC compressor power consumption.",
-            "Ensures CO₂ levels remain below 1,000 ppm for student alertness.",
-            (
-                "Automated cutoff relay triggered when rooms remain vacant >5"
-                " mins."
-            ),
-            "Measures waste bin depth to flag collections before overflow.",
-            "Optimizes landscape watering based on soil humidity.",
-        ],
-    })
-  else:
-    bom_df = pd.DataFrame({
-        "مكون الوحدة": [
-            "كشف الإشغال والحركة",
-            "قياس تيار التكييف",
-            "جودة الهواء الداخلي (IAQ)",
-            "التحكم في فصل التكييف",
-            "قياس امتلاء الحاويات الذكية",
-            "الري الذكي للمسطحات",
-        ],
-        "المستشعر / المشغل الإلكتروني": [
-            "مستشعر حركة بالأشعة تحت الحمراء (HC-SR501)",
-            "مشبك قياس التيار غير الجراحي (SCT-013-030)",
-            "مستشعر ثاني أكسيد الكربون والحرارة (MH-Z19)",
-            "وحدة مرحّل عزل بصري قناتين 5 فولت",
-            "مستشعر مسافة بالموجات فوق الصوتية (HC-SR04)",
-            "مستشعر رطوبة التربة السعوي v1.2",
-        ],
-        "منفذ ESP32 GPIO": [
-            "GPIO 14 (مدخل رقمي)",
-            "GPIO 35 (مدخل تناظري ADC)",
-            "GPIO 34 (مدخل تناظري ADC)",
-            "GPIO 26 (مخرج رقمي)",
-            "GPIO 12 (Trig) / GPIO 13 (Echo)",
-            "GPIO 32 (مدخل تناظري ADC)",
-        ],
-        "الوظيفة ودور التحديث": [
-            "رصد وجود الطلاب في القاعات لمنع هدر التكييف في الغرف الفارغة.",
-            "مراقبة استهلاك ضاغط التكييف للطاقة في الوقت الفعلي.",
-            "الحفاظ على مستوى CO₂ أقل من 1,000 جزء في المليون لتركيز الطلاب.",
-            "فصل التكييف تلقائياً عند خلو القاعة لأكثر من 5 دقائق.",
-            "قياس عمق النفايات لطلب التفريغ قبل امتلاء الحاوية.",
-            "تحسين ري الحدائق تلقائياً بناءً على نسبة رطوبة التربة.",
-        ],
-    })
-  st.dataframe(bom_df, use_container_width=True)
+    if lang == "English":
+        bom_df = pd.DataFrame({
+            "Module Component": [
+                "Occupancy Detection",
+                "HVAC Current Sensing",
+                "Indoor Air Quality (IAQ)",
+                "AC Mode & Relay Control",
+                "Smart Bin Fill Level",
+                "Smart Irrigation",
+            ],
+            "Hardware Sensor / Actuator": [
+                "PIR Motion Sensor (HC-SR501)",
+                "SCT-013-030 Non-Invasive Current Clamp",
+                "NDIR CO₂ & Temperature Sensor (MH-Z19)",
+                "5V 2-Channel Optical Isolation Relay + IR Blaster",
+                "Ultrasonic Distance Sensor (HC-SR04)",
+                "Capacitive Soil Moisture Sensor v1.2",
+            ],
+            "ESP32 GPIO Pin": [
+                "GPIO 14 (Digital IN)",
+                "GPIO 35 (ADC Analog IN)",
+                "GPIO 34 (ADC Analog IN)",
+                "GPIO 26 (Relay) / GPIO 27 (IR)",
+                "GPIO 12 (Trig) / GPIO 13 (Echo)",
+                "GPIO 32 (ADC Analog IN)",
+            ],
+            "Function & Timetable Fusion Role": [
+                "Overrides timetable if students are present; starts 15m grace timer if empty.",
+                "Monitors real-time AC compressor power consumption.",
+                "Ensures CO₂ levels remain below 1,000 ppm for student alertness.",
+                "Switches AC between 21°C Pre-Cool, 22°C Cool, and 26°C Eco / OFF.",
+                "Measures waste bin depth to flag collections before overflow.",
+                "Optimizes landscape watering based on soil humidity.",
+            ],
+        })
+    else:
+        bom_df = pd.DataFrame({
+            "مكون الوحدة": [
+                "كشف الإشغال والحركة",
+                "قياس تيار التكييف",
+                "جودة الهواء الداخلي (IAQ)",
+                "التحكم في وضع ودرجة التكييف",
+                "قياس امتلاء الحاويات الذكية",
+                "الري الذكي للمسطحات",
+            ],
+            "المستشعر / المشغل الإلكتروني": [
+                "مستشعر حركة بالأشعة تحت الحمراء (HC-SR501)",
+                "مشبك قياس التيار غير الجراحي (SCT-013-030)",
+                "مستشعر ثاني أكسيد الكربون والحرارة (MH-Z19)",
+                "وحدة مرحّل 5 فولت + مرسل أشعة تحت حمراء (IR)",
+                "مستشعر مسافة بالموجات فوق الصوتية (HC-SR04)",
+                "مستشعر رطوبة التربة السعوي v1.2",
+            ],
+            "منفذ ESP32 GPIO": [
+                "GPIO 14 (مدخل رقمي)",
+                "GPIO 35 (مدخل تناظري ADC)",
+                "GPIO 34 (مدخل تناظري ADC)",
+                "GPIO 26 (Relay) / GPIO 27 (IR)",
+                "GPIO 12 (Trig) / GPIO 13 (Echo)",
+                "GPIO 32 (مدخل تناظري ADC)",
+            ],
+            "الوظيفة ودور الدمج مع الجدول": [
+                "يتجاوز الجدول عند وجود طلاب؛ ويشغل مؤقت السماح (15 د) عند خلو القاعة.",
+                "مراقبة استهلاك ضاغط التكييف للطاقة في الوقت الفعلي.",
+                "الحفاظ على مستوى CO₂ أقل من 1,000 جزء في المليون لتركيز الطلاب.",
+                "تبديل التكييف بين التبريد الاستباقي (21°م) والتبريد (22°م) والتوفير (26°م).",
+                "قياس عمق النفايات لطلب التفريغ قبل امتلاء الحاوية.",
+                "تحسين ري الحدائق تلقائياً بناءً على نسبة رطوبة التربة.",
+            ],
+        })
+    st.dataframe(bom_df, use_container_width=True)
 
 # ==========================================
-# TAB 6: UN SDGS & UAE NET ZERO 2050
+# TAB 7: UN SDGS & UAE NET ZERO 2050
 # ==========================================
 with tab6:
-  st.subheader(t["t6_sub"])
+    st.subheader(t["t6_sub"])
 
-  col1, col2, col3 = st.columns(3)
-  with col1:
-    st.markdown(
-        f'<div class="info-box">{t["t6_sdg1"]}</div>',
-        unsafe_allow_html=True,
-    )
-  with col2:
-    st.markdown(
-        f'<div class="info-box">{t["t6_sdg2"]}</div>',
-        unsafe_allow_html=True,
-    )
-  with col3:
-    st.markdown(
-        f'<div class="info-box">{t["t6_sdg3"]}</div>',
-        unsafe_allow_html=True,
-    )
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown(
+            f'<div class="info-box">{t["t6_sdg1"]}</div>',
+            unsafe_allow_html=True,
+        )
+    with col2:
+        st.markdown(
+            f'<div class="info-box">{t["t6_sdg2"]}</div>',
+            unsafe_allow_html=True,
+        )
+    with col3:
+        st.markdown(
+            f'<div class="info-box">{t["t6_sdg3"]}</div>',
+            unsafe_allow_html=True,
+        )
 
-  st.markdown("---")
-  st.markdown(t["t6_uae_h"])
-  st.markdown(
-      f'<div class="info-box"><ul>{t["t6_uae_li"]}</ul></div>',
-      unsafe_allow_html=True,
-  )
+    st.markdown("---")
+    st.markdown(t["t6_uae_h"])
+    st.markdown(
+        f'<div class="info-box"><ul>{t["t6_uae_li"]}</ul></div>',
+        unsafe_allow_html=True,
+    )
